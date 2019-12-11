@@ -36,6 +36,8 @@ import Charts from "views/Charts.jsx";
 import Calendar from "views/Calendar.jsx";
 import UserPage from "views/Pages/UserPage.jsx";
 import LoginPage from "views/Pages/LoginPage.jsx";
+import GameList from "views/GameList.jsx";
+import UpdateGame from "views/UpdateGame.jsx";
 import RegisterPage from "views/Pages/RegisterPage.jsx";
 import LockScreenPage from "views/Pages/LockScreenPage.jsx";
 
@@ -45,7 +47,7 @@ var routes = [
     layout: "/admin",
     name: "Dashboard",
     icon: "pe-7s-graph",
-    component: Dashboard
+    component: GameList
   },
   {
     collapse: true,
@@ -229,6 +231,20 @@ var routes = [
         name: "User Page",
         mini: "UP",
         component: UserPage
+      },
+      {
+        path: "/games",
+        name: "Game List",
+        icon: "pe-7s-user",
+        component: GameList,
+        layout: "/admin"
+      },
+      {
+        path: "/game/edit",
+        name: "Update Game",
+        icon: "pe-7s-user",
+        component: UpdateGame,
+        layout: "/admin"
       },
       {
         path: "/login-page",

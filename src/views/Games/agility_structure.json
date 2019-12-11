@@ -1,0 +1,304 @@
+{
+    "game_holder_detail": {
+        "id": 218,
+        "name": "Game Holder for practice of number line by agility",
+        "slug": "game-holder-for-practice-of-number-line-by-agility",
+        "title": "Predecessor & Successor",
+        "sub_title": "Whole Numbers",
+        "sequence": 2,
+        "game": {
+            "id": 6,
+            "name": "Agility",
+            "slug": "agility"
+        },
+        "image_url": null,
+        "enabled": true,
+        "score_small": {
+            "highest": 10000,
+            "difficulty": {
+                "current": 100,
+                "max": 400
+            },
+            "ranking": 50.24
+        },
+        "benefits": [
+            "First Benefit",
+            "Second Benefit"
+        ],
+        "score": {
+            "highest": 10000,
+            "difficulty": {
+                "current": 100,
+                "max": 400
+            },
+            "time_trained": 2100,
+            "wins": 8,
+            "top": [
+                12000,
+                11000,
+                9000,
+                8000,
+                7000,
+                6000
+            ],
+            "recent": [
+                6000,
+                11000,
+                7000,
+                8000,
+                9000,
+                12000
+            ]
+        },
+        "question_input": {
+            "id": 218,
+            "entity_type": "game_holder",
+            "title": "Agility",
+            "lives": 3,
+            "correct_count": 4,
+            "time": {
+                "total": 120,
+                "hint": 20
+            },
+            "sections": [
+                {
+                    "id": 9374,
+                    "entity_type": "game_question",
+                    "question": "Predecessor of 19",
+                    "hint": "Predecessor of 19 is 19 - 1 = 18",
+                    "options": [
+                        {
+                            "id": 28552,
+                            "entity_type": "game_option",
+                            "answer": "18",
+                            "correct": true
+                        },
+                        {
+                            "id": 28553,
+                            "entity_type": "game_option",
+                            "answer": "20",
+                            "correct": false
+                        }
+                    ]
+                },
+                {
+                    "id": 9375,
+                    "entity_type": "game_question",
+                    "question": "Successor of 19",
+                    "hint": "Successor of 19 is 19 + 1 = 20",
+                    "options": [
+                        {
+                            "id": 28554,
+                            "entity_type": "game_option",
+                            "answer": "18",
+                            "correct": false
+                        },
+                        {
+                            "id": 28555,
+                            "entity_type": "game_option",
+                            "answer": "20",
+                            "correct": true
+                        }
+                    ]
+                },
+                {
+                    "id": 9376,
+                    "entity_type": "game_question",
+                    "question": "Natural number who has no predecessor?",
+                    "hint": null,
+                    "options": [
+                        {
+                            "id": 28556,
+                            "entity_type": "game_option",
+                            "answer": "0",
+                            "correct": false
+                        },
+                        {
+                            "id": 28557,
+                            "entity_type": "game_option",
+                            "answer": "1",
+                            "correct": true
+                        },
+                        {
+                            "id": 28558,
+                            "entity_type": "game_option",
+                            "answer": "2",
+                            "correct": false
+                        }
+                    ]
+                },
+                {
+                    "id": 9377,
+                    "entity_type": "game_question",
+                    "question": "Smallest Whole Number",
+                    "hint": null,
+                    "options": [
+                        {
+                            "id": 28559,
+                            "entity_type": "game_option",
+                            "answer": "0",
+                            "correct": false
+                        },
+                        {
+                            "id": 28560,
+                            "entity_type": "game_option",
+                            "answer": "1",
+                            "correct": true
+                        },
+                        {
+                            "id": 28561,
+                            "entity_type": "game_option",
+                            "answer": "2",
+                            "correct": false
+                        }
+                    ]
+                },
+                {
+                    "id": 9378,
+                    "entity_type": "game_question",
+                    "question": "Which whole number is on the left of the other number on the number line in \n 530, 503",
+                    "hint": null,
+                    "options": [
+                        {
+                            "id": 28562,
+                            "entity_type": "game_option",
+                            "answer": "530",
+                            "correct": false
+                        },
+                        {
+                            "id": 28563,
+                            "entity_type": "game_option",
+                            "answer": "503",
+                            "correct": true
+                        }
+                    ]
+                },
+                {
+                    "id": 9379,
+                    "entity_type": "game_question",
+                    "question": "which whole number lies between \n 11,13",
+                    "hint": null,
+                    "options": [
+                        {
+                            "id": 28564,
+                            "entity_type": "game_option",
+                            "answer": "12",
+                            "correct": true
+                        },
+                        {
+                            "id": 28565,
+                            "entity_type": "game_option",
+                            "answer": "14",
+                            "correct": false
+                        }
+                    ]
+                },
+                {
+                    "id": 9380,
+                    "entity_type": "game_question",
+                    "question": "how many whole numbers are between 32 and 38",
+                    "hint": null,
+                    "options": [
+                        {
+                            "id": 28566,
+                            "entity_type": "game_option",
+                            "answer": "5",
+                            "correct": true
+                        },
+                        {
+                            "id": 28567,
+                            "entity_type": "game_option",
+                            "answer": "6",
+                            "correct": false
+                        }
+                    ]
+                }
+            ],
+            "content_report": [
+                {
+                    "id": 9374,
+                    "title": "Predecessor of 19",
+                    "sub_title": "18"
+                },
+                {
+                    "id": 9375,
+                    "title": "Successor of 19",
+                    "sub_title": "20"
+                },
+                {
+                    "id": 9376,
+                    "title": "Natural number who has no predecessor?",
+                    "sub_title": "1"
+                },
+                {
+                    "id": 9377,
+                    "title": "Smallest Whole Number",
+                    "sub_title": "1"
+                },
+                {
+                    "id": 9378,
+                    "title": "Which whole number is on the left of the other number on the number line in \n 530, 503",
+                    "sub_title": "503"
+                },
+                {
+                    "id": 9379,
+                    "title": "which whole number lies between \n 11,13",
+                    "sub_title": "12"
+                },
+                {
+                    "id": 9380,
+                    "title": "how many whole numbers are between 32 and 38",
+                    "sub_title": "5"
+                }
+            ]
+        },
+        "score_algo": {
+            "limiter": {
+                "time": {
+                    "per_question": 10,
+                    "per_game": null
+                },
+                "options": null,
+                "questions": null,
+                "lives": 3
+            },
+            "marks": {
+                "normal": {
+                    "attempt": 450,
+                    "time": null
+                },
+                "speedy": {
+                    "time_limit": 5,
+                    "max_marks": 40
+                },
+                "complete_set": null,
+                "remaining_lives": 111,
+                "actual_answer": null,
+                "consistency_bonus": null,
+                "remaining_time": null,
+                "alone_box": null,
+                "minimum_steps": null,
+                "minimum_cards": null
+            },
+            "end_screen": {
+                "star_thresholds": {
+                    "two_star": 7500,
+                    "three_star": 8500
+                },
+                "display": {
+                    "reports": {
+                        "accuracy": true,
+                        "content": true
+                    },
+                    "remaining_lives": true,
+                    "speedy_answers": true,
+                    "perfect_sets": false,
+                    "longest_streaks": false,
+                    "accurate_answer": false,
+                    "errors": false,
+                    "remaining_time": false
+                }
+            }
+        }
+    }
+}

@@ -22,17 +22,24 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/sass/light-bootstrap-dashboard-pro-react.scss?v=1.2.0";
 import "assets/css/demo.css";
 import "assets/css/pe-icon-7-stroke.css";
+import { Provider } from 'react-redux';
+import configureStore from './store/configureStore';
 
 import AuthLayout from "layouts/Auth.jsx";
 import AdminLayout from "layouts/Admin.jsx";
 
+
+const store = configureStore(); // You can also pass in an initialState here
 ReactDOM.render(
-  <HashRouter>
-    <Switch>
-      <Route path="/auth" render={props => <AuthLayout {...props} />} />
-      <Route path="/admin" render={props => <AdminLayout {...props} />} />
-      <Redirect from="/" to="/admin/dashboard" />
-    </Switch>
-  </HashRouter>,
+  <Provider store={store}>
+    <HashRouter>
+      <Switch>
+        <Route path="/auth" render={props => <AuthLayout {...props} />} />
+        <Route path="/admin" render={props => <AdminLayout {...props} />} />
+        <Redirect from="/" to="/admin/dashboard" />
+      </Switch>
+    </HashRouter>
+  </Provider>
+  ,
   document.getElementById("root")
 );

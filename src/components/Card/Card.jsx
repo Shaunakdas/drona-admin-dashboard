@@ -20,6 +20,7 @@ class Card extends Component {
   render() {
     return (
       <div
+        onClick={this.props.onClick}
         className={
           "card" +
           (this.props.hidden ? " card-hidden" : "") +
