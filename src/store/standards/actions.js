@@ -25,12 +25,11 @@ export function standardSelected(standard) {
 export function standardsFetchData() {
   return (dispatch) => {
       dispatch(standardsIsLoading(true));
-
-      fetch('http://localhost:3000/api/v1/standards', {
+      fetch(`${process.env.REACT_APP_DRONA_BACKEND}/api/v1/standards`, {
         method: 'get',
         headers: {
           'Content-Type':'application/json',
-          'Authorization':'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMX0.sQctDMF9Cc5BmIbBhSAcOZ3Oxf2POFY-HcKxYlnbspM'
+          'Authorization':process.env.REACT_APP_AUTH_TOKEN
         }
        })
           .then((response) => {
