@@ -36,7 +36,6 @@ import { chaptersFetchData } from '../../store/chapters/actions';
                   this.props.standards.standards.map((standard, i) => (
                       
                         <MenuItem
-                            href="#books"
                             key={standard.id}
                             value={standard.id}
                             eventKey={i}

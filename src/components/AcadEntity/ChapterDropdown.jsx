@@ -33,7 +33,6 @@ import { gamesFetchData } from '../../store/games/actions';
                   this.props.chapters.chapters.map((chapter, i) => (
                       
                         <MenuItem
-                            href="#books"
                             key={chapter.id}
                             value={chapter.id}
                             eventKey={i}
