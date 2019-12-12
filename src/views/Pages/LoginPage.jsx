@@ -15,6 +15,7 @@
 
 */
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import {
   Grid,
   Row,
@@ -29,11 +30,16 @@ import Card from "components/Card/Card.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import Checkbox from "components/CustomCheckbox/CustomCheckbox.jsx";
 
+import { performLogin } from '../../store/user/actions';
+
 class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cardHidden: true
+      cardHidden: true,
+      email: '',
+      password: '',
+      errorMsg: ''
     };
   }
   componentDidMount() {
@@ -44,12 +50,31 @@ class LoginPage extends Component {
       700
     );
   }
+  validateForm() {
+    return this.state.email.length > 0 && this.state.password.length > 0;
+  }
+
+
+  handleSubmit(event) {
+    // event.preventDefault();
+    this.props.performLogin({
+      email: this.state.email,
+      password: this.state.password
+    });
+  }
+  handleClick(event) {
+    // event.preventDefault();
+    this.props.performLogin({
+      email: this.state.email,
+      password: this.state.password
+    });
+  }
   render() {
     return (
       <Grid>
         <Row>
           <Col md={4} sm={6} mdOffset={4} smOffset={3}>
-            <form>
+            <form onSubmit={this.handleSubmit}>
               <Card
                 hidden={this.state.cardHidden}
                 textCenter
@@ -58,19 +83,33 @@ class LoginPage extends Component {
                   <div>
                     <FormGroup>
                       <ControlLabel>Email address</ControlLabel>
-                      <FormControl placeholder="Enter email" type="email" />
+                      <FormControl
+                        placeholder="Enter email" 
+                        type="email"
+                        onChange={e => this.setState({email: (e.target.value)})}
+                      />
                     </FormGroup>
                     <FormGroup>
                       <ControlLabel>Password</ControlLabel>
-                      <FormControl placeholder="Password" type="password" autoComplete="off"/>
+                      <FormControl
+                        placeholder="Password"
+                        type="password"
+                        autoComplete="off"
+                        onChange={e => this.setState({password: (e.target.value)})}
+                      />
                     </FormGroup>
-                    <FormGroup>
-                      <Checkbox number="1" label="Subscribe to newsletter" />
-                    </FormGroup>
+                    {
+                      (this.props.user.errorMsg.length > 0)? 
+                      <p> {this.props.user.errorMsg}</p> : null
+                    }
+                    
                   </div>
                 }
+                
                 legend={
-                  <Button bsStyle="info" fill wd>
+                  <Button bsStyle="info" fill wd
+                    disabled={!this.validateForm()}
+                    onClick={(event) => this.handleClick(event)}>
                     Login
                   </Button>
                 }
@@ -84,4 +123,14 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+const mapStateToProps = (state) => {
+  return {
+      user: state.user
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    performLogin: ({email,password}) => dispatch(performLogin({email,password}))
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
