@@ -20,7 +20,6 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
         if (this.props.questions.isLoading) {
             return <p>Loading ...</p>;
         }
-        console.log(this.props);
         return (
             <Table striped hover>
                 <thead>

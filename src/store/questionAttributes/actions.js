@@ -19,7 +19,6 @@ export function questionUpdateSuccess(questions) {
 export function questionAttributeUpdateCalled(questionAttributes) {
   return (dispatch) => {
       dispatch(questionUpdatePending(true));
-      console.log(questionAttributes);  
       fetch(`${process.env.REACT_APP_DRONA_BACKEND}/api/v1/question/update`, {
         method: 'put',
         body: JSON.stringify(questionAttributes),

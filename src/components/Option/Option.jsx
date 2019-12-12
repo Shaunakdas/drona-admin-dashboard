@@ -24,7 +24,6 @@ import Selector from "../Attribute/Selector"
 class Option extends Component {
   render() {
     let optionObj = this.props.option;
-    console.log(optionObj);
     return (
       <Card
         title="Option"

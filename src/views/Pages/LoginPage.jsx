@@ -28,7 +28,6 @@ import {
 import Card from "components/Card/Card.jsx";
 
 import Button from "components/CustomButton/CustomButton.jsx";
-import Checkbox from "components/CustomCheckbox/CustomCheckbox.jsx";
 
 import { performLogin } from '../../store/user/actions';
 
