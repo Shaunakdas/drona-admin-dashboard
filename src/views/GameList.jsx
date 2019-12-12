@@ -16,6 +16,8 @@
 
 */
 import React, { Component } from "react";
+import { connect } from 'react-redux';
+import { Redirect } from "react-router-dom";
 import {
   Grid,
   Row,
@@ -35,7 +37,9 @@ import Button from "components/CustomButton/CustomButton.jsx";
 
 class GameList extends Component {
   render() {
-    return (
+    return (!this.props.user.loggedIn)? (
+      <Redirect to="/auth/login-page" />
+          ) : (
       <div className="content">
         <Grid fluid>
           <Row>
@@ -129,4 +133,9 @@ class GameList extends Component {
   }
 }
 
-export default GameList;
+const mapStateToProps = (state) => {
+  return {
+      user: state.user
+  };
+};
+export default connect(mapStateToProps, null) (GameList);

@@ -16,6 +16,7 @@
 */
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { Redirect } from "react-router-dom";
 import {
   Grid,
   Row,
@@ -69,7 +70,9 @@ class LoginPage extends Component {
     });
   }
   render() {
-    return (
+    return (this.props.user.loggedIn)? (
+      <Redirect to="/" />
+          ) : (
       <Grid>
         <Row>
           <Col md={4} sm={6} mdOffset={4} smOffset={3}>
