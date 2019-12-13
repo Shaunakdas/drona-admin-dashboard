@@ -10,10 +10,10 @@ export function questionUpdateHasErrored(bool) {
       hasErrored: bool
   };
 }
-export function questionUpdateSuccess(questions) {
+export function questionUpdateSuccess(questionAttributes) {
   return {
       type: 'QUESTION_UPDATE_SUCCESS',
-      questions
+      questionAttributes
   };
 }
 export function questionAttributeUpdateCalled(questionAttributes) {
@@ -37,7 +37,7 @@ export function questionAttributeUpdateCalled(questionAttributes) {
               return response;
           })
           .then((response) => response.json())
-          .then((question) => dispatch(questionUpdateSuccess(question)))
+          .then((questionAttributes) => dispatch(questionUpdateSuccess(questionAttributes)))
           .catch(() => dispatch(questionUpdateHasErrored(true)));
   };
 }

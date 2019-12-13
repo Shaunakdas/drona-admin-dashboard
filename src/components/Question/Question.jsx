@@ -17,6 +17,8 @@
 */
 import React, { Component } from "react";
 
+import { connect } from 'react-redux';
+
 import Card from "components/Card/Card.jsx";
 import InputText from "../Attribute/InputText"
 import Selector from "../Attribute/Selector"
@@ -28,6 +30,13 @@ import { bool } from "prop-types";
 class Question extends Component {
   render() {
     let questionObj = this.props.questionObj;
+    if ("questionAttributes" in this.props.questionAttributes){
+      questionObj = this.props.questionAttributes.questionAttributes;
+    }
+    let isLoading = false;
+    if ("isLoading" in this.props.questionAttributes){
+      isLoading = this.props.questionAttributes.isLoading;
+    }
     return (
         <Card
           title="Question"
@@ -46,30 +55,40 @@ class Question extends Component {
                 title="Question Highlight"
                 input={questionObj.section_question}
                 rows="5"
+                field="section_question"
+                questionAttr={questionObj}
               />
               {/* Time */}
               <InputText 
                 title="time"
                 input={questionObj.time}
                 rows="1"
+                field="time"
+                questionAttr={questionObj}
               />
               {/* Tip */}
               <InputText 
                 title="Tip"
                 input={questionObj.tip}
                 rows="2"
+                field="tip"
+                questionAttr={questionObj}
               />
               {/* Bubble */}
               <InputText 
                 title="Bubble"
                 input={questionObj.bubble}
                 rows="1"
+                field="bubble"
+                questionAttr={questionObj}
               />
               {/* Correct Option Count */}
               <InputText 
                 title="Correct Option Count"
                 input={questionObj.correct_option_count}
                 rows="1"
+                field="correct_option_count"
+                questionAttr={questionObj}
               />
 
               {/* Tips */}
@@ -130,6 +149,8 @@ class Question extends Component {
                             title="Hint"
                             input={questionObj.hint}
                             rows="2"
+                            field="hint"
+                            questionAttr={questionObj}
                         />
                           : 
                           <div>
@@ -174,18 +195,24 @@ class Question extends Component {
                 title="Type"
                 rows="1"
                 input={questionObj.type}
+                field="type"
+                questionAttr={questionObj}
               />
               {/* Title */}
               <InputText 
                 title="Title"
                 rows="2"
                 input={questionObj.title}
+                field="title"
+                questionAttr={questionObj}
               />
               {/* Mode */}
               <InputText 
                 title="Mode"
                 rows="2"
                 input={questionObj.mode}
+                field="mode"
+                questionAttr={questionObj}
               />
 
 
@@ -237,4 +264,9 @@ class Question extends Component {
   }
 }
 
-export default Question;
+const mapStateToProps = (state) => {
+  return {
+      questionAttributes: state.questionAttributes
+  };
+};
+export default connect(mapStateToProps, null) (Question);

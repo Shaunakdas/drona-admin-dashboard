@@ -93,6 +93,10 @@ class InputText extends Component {
           onClick={event=>{
             this.setState({edit:this.state.edit!==true})
           }}>
+          {
+            ("inLoading" in this.props.questionAttributes)? 
+            <i className="pe-7s-lock" /> : null
+          }
           
         </Card>
       </FormGroup>
@@ -129,9 +133,15 @@ class InputText extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+      questionAttributes: state.questionAttributes
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
       questionAttributeUpdateCalled: (questionAttributes) => dispatch(questionAttributeUpdateCalled(questionAttributes))
   };
 };
-export default connect(null, mapDispatchToProps)(InputText);
+export default connect(mapStateToProps, mapDispatchToProps)(InputText);
