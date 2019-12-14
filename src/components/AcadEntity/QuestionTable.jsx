@@ -9,9 +9,8 @@ import {
 import { questionsFetchData,questionSelected } from '../../store/questions/actions';
 
  class QuestionTable extends Component {
-    questionSelection(questionKey){
-        let selectedQuestion = this.props.questions.questions[questionKey];
-        this.props.questionSelected(selectedQuestion);
+    questionSelection(questionId){
+        this.props.questionSelected(questionId);
     }
     render() {
         if (this.props.questions.hasErrored) {
@@ -38,7 +37,7 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
                         <td key={question.question}>{question.question}</td>
                         <td key={"key"}>
                             <DropdownButton title="Edit">
-                                <MenuItem eventKey={2.1} onClick={() => this.questionSelection(i)}>
+                                <MenuItem eventKey={2.1} onClick={() => this.questionSelection(question.id)}>
                                     <NavLink to="game/edit">
                                         Open
                                     </NavLink>
@@ -65,7 +64,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
       fetchData: () => dispatch(questionsFetchData()),
-      questionSelected: (question) => dispatch(questionSelected(question)), 
+      questionSelected: (questionId) => dispatch(questionSelected(questionId)), 
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionTable);

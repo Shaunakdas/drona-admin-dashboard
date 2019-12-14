@@ -31,7 +31,9 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import avatar from "assets/img/agility-tuts.png";
 
 class UpdateGame extends Component {
-  
+  questionSelected(questions){
+    return questions.questions.find(x => x.id === questions.selectedId)
+  }
   render() {  
     return (
       <div className="content">
@@ -94,7 +96,7 @@ class UpdateGame extends Component {
           <Row>
           {/* {gameComponent} */}
           
-          <QuestionEditor question={this.props.questions.selected}/>
+          <QuestionEditor question={this.questionSelected(this.props.questions)}/>
           
           <Button bsStyle="info" pullRight fill type="submit">
               Update Question

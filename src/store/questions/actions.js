@@ -16,10 +16,10 @@ export function questionsFetchDataSuccess(questions) {
       questions
   };
 }
-export function questionSelected(question) {
+export function questionSelected(questionId) {
   return {
       type: 'QUESTION_SELECTED',
-      question
+      questionId
   };
 }
 export function questionsFetchData(gameId) {

@@ -8,7 +8,7 @@ export function questions(state = initialState, action) {
     case 'QUESTIONS_HAS_ERRORED': 
         return { ...state, isLoading: false, errorMessage: 'action.payload.message' };
     case 'QUESTION_SELECTED': 
-        return { ...state, selected: action.question };
+        return { ...state, selectedId: action.questionId };
     default:
         return state;
   }
