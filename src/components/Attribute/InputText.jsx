@@ -29,6 +29,8 @@ import {  BlockMath } from 'react-katex';
 import Card from "components/Card/Card";
 import MathJax from 'react-mathjax';
 import { questionUpdateCalled } from '../../store/questions/actions';
+import { optionUpdateCalled } from '../../store/questions/actions';
+
 
 const convertToKatex = (texString) => {
   let updatedText = texString.toString().replace(/ /g, '\\,');
@@ -70,13 +72,17 @@ class InputText extends Component {
         }}
         onBlur={event=>{
           this.setState({edit:false})
-          const {id, entity_type} = this.props.questionAttr;
-          this.props.questionUpdateCalled({
+          const {id, entity_type} = this.props.attributes;
+          const updateParams = {
             id,
             entity_type,
             [this.props.field]: event.target.value
           }
-            );
+          if(entity_type === "game_question"){
+            this.props.questionUpdateCalled(updateParams);
+          }else{
+            this.props.optionUpdateCalled(updateParams);
+          }
         }}
         onKeyUp={event=>{
           if(event.key==='Escape') {
@@ -132,7 +138,8 @@ class InputText extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      questionUpdateCalled: (question) => dispatch(questionUpdateCalled(question))
+    questionUpdateCalled: (question) => dispatch(questionUpdateCalled(question)),
+    optionUpdateCalled: (option) => dispatch(optionUpdateCalled(option))
   };
 };
 export default connect(null, mapDispatchToProps)(InputText);

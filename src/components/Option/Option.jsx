@@ -17,6 +17,7 @@
 */
 import React, { Component } from "react";
 
+import { connect } from 'react-redux';
 import Card from "components/Card/Card.jsx";
 import InputText from "../Attribute/InputText"
 import Selector from "../Attribute/Selector"
@@ -29,6 +30,13 @@ class Option extends Component {
         title="Option"
         content={
           <form>
+            {
+            (this.props.questions.isOptionUpdatePending)? 
+              <div>
+                <i className="pe-7s-lock" />
+                <p> Updating... </p>
+              </div> : null
+            }
             {/* Display */}
             {
               (optionObj.answer === undefined)?
@@ -37,6 +45,8 @@ class Option extends Component {
                   title="Display"
                   rows="2"
                   input={optionObj.answer}
+                  field="answer"
+                  attributes={optionObj}
                 />
             }
             {/* Index */}
@@ -47,6 +57,8 @@ class Option extends Component {
                   title="Index"
                   rows="2"
                   input={optionObj.index}
+                  field="index"
+                  attributes={optionObj}
                 />
             }
             {
@@ -56,6 +68,8 @@ class Option extends Component {
                   title="Display"
                   rows="2"
                   input={optionObj.display}
+                  field="display"
+                  attributes={optionObj}
                 />
             }
             {/* Hint */}
@@ -66,6 +80,8 @@ class Option extends Component {
                   title="Hint"
                   rows="2"
                   input={optionObj.hint}
+                  field="hint"
+                  attributes={optionObj}
                 />
             }
             {/* Title */}
@@ -76,6 +92,8 @@ class Option extends Component {
                   title="Title"
                   rows="1"
                   input={optionObj.title}
+                  field="title"
+                  attributes={optionObj}
                 />
             }
             {/* Value Type */}
@@ -86,6 +104,8 @@ class Option extends Component {
                   title="Value Type"
                   rows="1"
                   input={optionObj.value_type}
+                  field="value_type"
+                  attributes={optionObj}
                 />
             }
             {/* Key */}
@@ -96,6 +116,8 @@ class Option extends Component {
                   title="Key"
                   rows="1"
                   input={optionObj.key}
+                  field="key"
+                  attributes={optionObj}
                 />
             }
             {/* Value */}
@@ -106,6 +128,8 @@ class Option extends Component {
                   title="Value"
                   rows="1"
                   input={optionObj.value}
+                  field="value"
+                  attributes={optionObj}
                 />
             }
             {/* Option Index */}
@@ -116,6 +140,8 @@ class Option extends Component {
                   title="Option Index"
                   rows="1"
                   input={optionObj.option_index}
+                  field="option_index"
+                  attributes={optionObj}
                 />
             }
             {/* Upper */}
@@ -126,6 +152,8 @@ class Option extends Component {
                   title="Upper"
                   rows="2"
                   input={optionObj.upper}
+                  field="upper"
+                  attributes={optionObj}
                 />
             }
             {/* Lower */}
@@ -136,6 +164,8 @@ class Option extends Component {
                   title="Lower"
                   rows="2"
                   input={optionObj.lower}
+                  field="lower"
+                  attributes={optionObj}
                 />
             }
             {/* Attempted */}
@@ -146,6 +176,8 @@ class Option extends Component {
                   title="Attempted"
                   rows="2"
                   input={optionObj.attempted}
+                  field="attempted"
+                  attributes={optionObj}
                 />
             }
             {/* Sequence */}
@@ -156,6 +188,8 @@ class Option extends Component {
                   title="Sequence"
                   rows="2"
                   input={optionObj.sequence}
+                  field="sequence"
+                  attributes={optionObj}
                 />
             }
 
@@ -166,6 +200,8 @@ class Option extends Component {
                 <Selector 
                   title="Correct"
                   isChecked={optionObj.correct}
+                  field="correct"
+                  attributes={optionObj}
                 />
             }
             <div className="clearfix" />
@@ -176,4 +212,9 @@ class Option extends Component {
   }
 }
 
-export default Option;
+const mapStateToProps = (state) => {
+  return {
+      questions: state.questions
+  };
+};
+export default connect(mapStateToProps, null) (Option);

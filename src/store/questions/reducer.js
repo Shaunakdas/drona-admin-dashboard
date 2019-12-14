@@ -1,4 +1,4 @@
-const initialState = { questions: [], isUpdatePending: false };
+const initialState = { questions: [], isQuestionUpdatePending: false };
 export function questions(state = initialState, action) {
   switch (action.type) {
     case 'QUESTIONS_IS_LOADING': 
@@ -10,18 +10,36 @@ export function questions(state = initialState, action) {
     case 'QUESTION_SELECTED': 
         return { ...state, selectedId: action.questionId };
     case 'QUESTION_UPDATE_PENDING': 
-        return { ...state, isUpdatePending: true };
+        return { ...state, isQuestionUpdatePending: true };
     case 'QUESTION_UPDATE_SUCCESS':
         return { 
             ...state,
-            isUpdatePending: false, 
+            isQuestionUpdatePending: false, 
             questions: state.questions.map(
                 question => question.id === state.selectedId ? action.question : question
             )
-         };
+            };
     case 'QUESTION_UPDATE_HAS_ERRORED': 
-        return { ...state, isUpdatePending: false, errorMessage: 'action.payload.message' };
-    
+        return { ...state, isQuestionUpdatePending: false, errorMessage: 'action.payload.message' };
+    case 'OPTION_UPDATE_PENDING': 
+        return { ...state, isOptionUpdatePending: true };
+    case 'OPTION_UPDATE_SUCCESS':
+        return { 
+            ...state,
+            isOptionUpdatePending: false, 
+            questions: state.questions.map(
+                question => question.id === state.selectedId ? 
+                    {
+                        ...question,
+                        options: question.options.map(
+                            option => option.id === action.option.id ? action.option : option
+                        )
+                    } : question
+            )
+            };
+    case 'OPTION_UPDATE_HAS_ERRORED': 
+        return { ...state, isOptionUpdatePending: false, errorMessage: 'action.payload.message' };
+        
     default:
         return state;
   }

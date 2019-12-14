@@ -36,7 +36,7 @@ class Question extends Component {
           content={
             <form>
               {
-              (this.props.questions.isUpdatePending)? 
+              (this.props.questions.isQuestionUpdatePending)? 
                 <div>
                   <i className="pe-7s-lock" />
                   <p> Updating... </p>
@@ -48,7 +48,7 @@ class Question extends Component {
                 input={questionObj.question}
                 rows="5"
                 field="question"
-                questionAttr={questionObj}
+                attributes={questionObj}
               />
               {/* Question Highlights */}
               <InputText 
@@ -56,7 +56,7 @@ class Question extends Component {
                 input={questionObj.section_question}
                 rows="5"
                 field="section_question"
-                questionAttr={questionObj}
+                attributes={questionObj}
               />
               {/* Time */}
               <InputText 
@@ -64,7 +64,7 @@ class Question extends Component {
                 input={questionObj.time}
                 rows="1"
                 field="time"
-                questionAttr={questionObj}
+                attributes={questionObj}
               />
               {/* Tip */}
               <InputText 
@@ -72,7 +72,7 @@ class Question extends Component {
                 input={questionObj.tip}
                 rows="2"
                 field="tip"
-                questionAttr={questionObj}
+                attributes={questionObj}
               />
               {/* Bubble */}
               <InputText 
@@ -80,7 +80,7 @@ class Question extends Component {
                 input={questionObj.bubble}
                 rows="1"
                 field="bubble"
-                questionAttr={questionObj}
+                attributes={questionObj}
               />
               {/* Correct Option Count */}
               <InputText 
@@ -88,7 +88,7 @@ class Question extends Component {
                 input={questionObj.correct_option_count}
                 rows="1"
                 field="correct_option_count"
-                questionAttr={questionObj}
+                attributes={questionObj}
               />
 
               {/* Tips */}
@@ -150,7 +150,7 @@ class Question extends Component {
                             input={questionObj.hint}
                             rows="2"
                             field="hint"
-                            questionAttr={questionObj}
+                            attributes={questionObj}
                         />
                           : 
                           <div>
@@ -196,7 +196,7 @@ class Question extends Component {
                 rows="1"
                 input={questionObj.type}
                 field="type"
-                questionAttr={questionObj}
+                attributes={questionObj}
               />
               {/* Title */}
               <InputText 
@@ -204,7 +204,7 @@ class Question extends Component {
                 rows="2"
                 input={questionObj.title}
                 field="title"
-                questionAttr={questionObj}
+                attributes={questionObj}
               />
               {/* Mode */}
               <InputText 
@@ -212,7 +212,7 @@ class Question extends Component {
                 rows="2"
                 input={questionObj.mode}
                 field="mode"
-                questionAttr={questionObj}
+                attributes={questionObj}
               />
 
 
