@@ -30,18 +30,18 @@ import { bool } from "prop-types";
 class Question extends Component {
   render() {
     let questionObj = this.props.questionObj;
-    if ("questionAttributes" in this.props.questionAttributes){
-      questionObj = this.props.questionAttributes.questionAttributes;
-    }
-    let isLoading = false;
-    if ("isLoading" in this.props.questionAttributes){
-      isLoading = this.props.questionAttributes.isLoading;
-    }
     return (
         <Card
           title="Question"
           content={
             <form>
+              {
+              (this.props.questions.isUpdatePending)? 
+                <div>
+                  <i className="pe-7s-lock" />
+                  <p> Updating... </p>
+                </div> : null
+              }
               {/* Display */}
               <InputText 
                 title="Display"
@@ -266,7 +266,7 @@ class Question extends Component {
 
 const mapStateToProps = (state) => {
   return {
-      questionAttributes: state.questionAttributes
+      questions: state.questions
   };
 };
 export default connect(mapStateToProps, null) (Question);

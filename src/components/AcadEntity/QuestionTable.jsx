@@ -31,7 +31,7 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
                 <tbody>
                 {("questions" in this.props.questions)?
                   this.props.questions.questions.map((question, i) => (
-                    <tr key={question.id}>
+                    <tr key={`${question.id}-${i}`}>
                         <td key={question.id}>{question.id}</td>
                         <td key={question.id}>{'-'}</td>
                         <td key={question.question}>{question.question}</td>

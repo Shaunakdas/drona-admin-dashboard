@@ -28,7 +28,7 @@ import 'katex/dist/katex.min.css';
 import {  BlockMath } from 'react-katex';
 import Card from "components/Card/Card";
 import MathJax from 'react-mathjax';
-import { questionAttributeUpdateCalled } from '../../store/questionAttributes/actions';
+import { questionUpdateCalled } from '../../store/questions/actions';
 
 const convertToKatex = (texString) => {
   let updatedText = texString.toString().replace(/ /g, '\\,');
@@ -71,7 +71,7 @@ class InputText extends Component {
         onBlur={event=>{
           this.setState({edit:false})
           const {id, entity_type} = this.props.questionAttr;
-          this.props.questionAttributeUpdateCalled({
+          this.props.questionUpdateCalled({
             id,
             entity_type,
             [this.props.field]: event.target.value
@@ -93,10 +93,6 @@ class InputText extends Component {
           onClick={event=>{
             this.setState({edit:this.state.edit!==true})
           }}>
-          {
-            ("inLoading" in this.props.questionAttributes)? 
-            <i className="pe-7s-lock" /> : null
-          }
           
         </Card>
       </FormGroup>
@@ -134,14 +130,9 @@ class InputText extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-      questionAttributes: state.questionAttributes
-  };
-};
 const mapDispatchToProps = (dispatch) => {
   return {
-      questionAttributeUpdateCalled: (questionAttributes) => dispatch(questionAttributeUpdateCalled(questionAttributes))
+      questionUpdateCalled: (question) => dispatch(questionUpdateCalled(question))
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(InputText);
+export default connect(null, mapDispatchToProps)(InputText);
