@@ -43,11 +43,35 @@ class InputText extends Component {
     this.state = {
       name: props.name,
       type: props.type||'text',
-      value: props.input||'',
+      value: this.props.openForCreating? '': (props.input||''),
       editClassName: props.editClassName,
       edit: false,
       rows: props.rows
     }
+  }
+
+  coreComponent(){
+    if(this.props.openForEditing){
+      return this.editComponent();
+    }
+    if(this.props.openForCreating){
+      return this.createComponent();
+    }
+    return null;
+  }
+  createComponent(){
+    return (
+      <FormControl
+        rows={this.props.rows}
+        componentClass="textarea"
+        bsClass="form-control"
+        placeholder={`Here can be your ${this.props.field}`}
+        onChange={event=>{
+          this.setState({value:event.target.value});
+          this.props.editor(this.props.field, event.target.value);
+        }}
+      />
+    );
   }
   
   editComponent() {
@@ -55,7 +79,7 @@ class InputText extends Component {
       this.state.edit===true&&
       <FormControl
         rows={this.state.rows}
-        componentClass="textarea"
+        componentClass="textarea"  
         name={this.state.name}
         type={this.state.type}
         value={this.state.value}
@@ -122,7 +146,7 @@ class InputText extends Component {
                 defaultValue={this.props.input}
               /> */}
               {
-                this.editComponent()
+                this.coreComponent()
               }
             </FormGroup>
           </Col>
@@ -135,11 +159,16 @@ class InputText extends Component {
     );
   }
 }
-
+const mapStateToProps = (state) => {
+  return {
+    openForEditing: state.questions.openForEditing,
+    openForCreating: state.questions.openForCreating
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     questionUpdateCalled: (question) => dispatch(questionUpdateCalled(question)),
     optionUpdateCalled: (option) => dispatch(optionUpdateCalled(option))
   };
 };
-export default connect(null, mapDispatchToProps)(InputText);
+export default connect(mapStateToProps, mapDispatchToProps)(InputText);

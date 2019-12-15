@@ -28,6 +28,33 @@ import NumberLine from "./NumberLine";
 import { bool } from "prop-types";
 
 class Question extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      finalObj: {},
+    }
+    this.editor = this.editor.bind(this);
+  }
+  editor(field, value){
+    this.setState(prevState => ({
+      finalObj: {                   // object that we want to update
+          ...prevState.finalObj,    // keep all other key-value pairs
+          [field]: value       // update the value of specific key
+      }
+  }))
+  }
+  //Backup function
+  updateValues(questionObj){
+    Object.keys(questionObj).forEach(function(key) {
+      if(key === "entity_type"){
+        return;
+      }
+      if (/string|bool|sequence|positive_integer/.test(questionObj[key])) {
+        questionObj[key] = null;
+      }
+    });
+    return questionObj;
+  }
   render() {
     let questionObj = this.props.questionObj;
     return (
@@ -49,6 +76,7 @@ class Question extends Component {
                 rows="5"
                 field="question"
                 attributes={questionObj}
+                editor={this.editor}
               />
               {/* Question Highlights */}
               <InputText 
@@ -185,6 +213,7 @@ class Question extends Component {
                           title="Answer"
                           input={questionObj.answer}
                           rows="2"
+                          field="answer"
                         />
                     }
                   </div>

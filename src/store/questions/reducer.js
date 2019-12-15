@@ -1,4 +1,10 @@
-const initialState = { questions: [], isQuestionUpdatePending: false };
+const initialState = { 
+    questions: [],
+    isQuestionUpdatePending: false,
+    isLoading: false,
+    openForEditing: false,
+    openForCreating: false
+};
 export function questions(state = initialState, action) {
   switch (action.type) {
     case 'QUESTIONS_IS_LOADING': 

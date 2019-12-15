@@ -24,7 +24,7 @@ export function questionSelected(questionId) {
 }
 export function questionCreating(){
   return {
-      type: 'QUESTIONS_CREATING'
+      type: 'QUESTION_CREATING'
   };
 }
 export function questionsFetchData(gameId) {
