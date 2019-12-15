@@ -24,8 +24,10 @@ import InputText from "../Attribute/InputText"
 import Selector from "../Attribute/Selector"
 import OptionList from "components/Option/OptionList";
 import NumberLine from "./NumberLine";
+import Button from "components/CustomButton/CustomButton.jsx";
 
 import { bool } from "prop-types";
+import {  questionCreateCalled } from '../../store/questions/actions';
 
 class Question extends Component {
   constructor(props){
@@ -63,6 +65,11 @@ class Question extends Component {
       }
     });
     return questionObj;
+  }
+  createQuestion(){
+    this.props.questionCreateCalled(
+      this.state.finalObj,
+      this.props.games.selected.id);
   }
   render() {
     let questionObj = this.props.questionObj;
@@ -307,16 +314,26 @@ class Question extends Component {
                     editor={this.optionListEditor}/>
               }
               <div className="clearfix" />
+              <Button bsStyle="info" pullRight fill onClick={this.createQuestion.bind(this)}>
+                Upload Question
+              </Button>
             </form>
           }
         />
+        
     );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-      questions: state.questions
+      questions: state.questions,
+      games: state.games
   };
 };
-export default connect(mapStateToProps, null) (Question);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    questionCreateCalled : (question, gameId) => dispatch(questionCreateCalled(question, gameId))
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps) (Question);

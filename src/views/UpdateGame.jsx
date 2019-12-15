@@ -28,7 +28,6 @@ import {
 
 import QuestionEditor from "./Games/QuestionEditor.jsx";
 
-import Button from "components/CustomButton/CustomButton.jsx";
 
 import avatar from "assets/img/agility-tuts.png";
 import {  storeToken } from '../store/user/actions';
@@ -112,9 +111,7 @@ class UpdateGame extends Component {
           
           <QuestionEditor question={this.questionSelected()}/>
           
-          <Button bsStyle="info" pullRight fill type="submit">
-              Update Question
-            </Button>
+          
           </Row>
           </Grid>
         </div>
