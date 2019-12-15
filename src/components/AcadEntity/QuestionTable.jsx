@@ -24,7 +24,7 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
                 <thead>
                 <tr>
                     <th key={'Id'}>{'Id'}</th>
-                    <th key={'Sequence'}>{'Sequence'}</th>
+                    <th key={'Seq.'}>{'Seq.'}</th>
                     <th key={'Title'}>{'Title'}</th>
                 </tr>
                 </thead>

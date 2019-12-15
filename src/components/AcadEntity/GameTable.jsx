@@ -24,7 +24,7 @@ import {
             <Table striped hover>
                 <thead>
                 <tr>
-                    <th key={'Sequence'}>{'Sequence'}</th>
+                    <th key={'Seq.'}>{'Seq.'}</th>
                     <th key={'Title'}>{'Title'}</th>
                     <th key={'Type'}>{'Type'}</th>
                     <th key={'Id'}>{'Id'}</th>

@@ -45,43 +45,17 @@ class GameList extends Component {
           <Row>
             <Col md={6}>
               <Card
-                title="Edit Profile"
+                title="Dashboard"
                 content={
                   <form>
                   <Row>
                     <Col md={9}>
-                      <FormGroup controlId="formControlsTextarea">
-                        <div className="col-md-3">
-                          <ControlLabel>Standard: </ControlLabel>
-                        </div>
-                        <div className="col-md-5">
-                          <StandardDropdown />
-                        </div>
-                        <div className="col-md-3">
-                          <Button bsStyle="info" fill>
-                            Submit Standard
-                          </Button>
-                        </div>
-                        
-                      </FormGroup>
+                    <ControlLabel>Standard: </ControlLabel> <StandardDropdown />
                     </Col>
                   </Row>
                   <Row>
                     <Col md={9}>
-                      <FormGroup controlId="formControlsTextarea">
-                        <div className="col-md-3">
-                          <ControlLabel>Chapter: </ControlLabel>
-                        </div>
-                        <div className="col-md-5">
-                          <ChapterDropdown />
-                        </div>
-                        <div className="col-md-3">
-                          <Button bsStyle="info" fill type="submit">
-                            Submit Chapter
-                          </Button>
-                        </div>
-                        
-                      </FormGroup>
+                    <ControlLabel>Chapter: </ControlLabel><ChapterDropdown />
                     </Col>
                   </Row>
 
@@ -100,23 +74,25 @@ class GameList extends Component {
             <div className="card card-user">
               <div className="content">
                 <p className="description text-center">
-                  <ControlLabel>Selected Standard:</ControlLabel>
-                  <h5 className="title">Standard_1</h5>
+                  Selected Standard: Standard_1
                 </p>
                 <p className="description text-center">
-                  <ControlLabel>Selected Chapter:</ControlLabel>
-                  <h5 className="title">Chapter_1</h5>
+                  Selected Chapter: Chapter_1
                 </p>
                 <p className="description text-center">
-                  <ControlLabel>Selected Game:</ControlLabel>
-                  <h5 className="title">Game_1</h5>
+                  Selected Game: Game_1
                 </p>
                 <p className="description text-center">
-                  <ControlLabel>Question Count:</ControlLabel>
-                  <h5 className="title">40</h5>
+                  Question Count: 40
                 </p>
+                <div className="description text-center">
+                <Button bsStyle="info" fill type="submit">
+                            New Question
+                          </Button>
+                </div>
+                
+                
               </div>
-              <hr />
             </div>
             </Row>
             <Row>
