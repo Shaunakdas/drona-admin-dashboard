@@ -31,6 +31,7 @@ import QuestionEditor from "./Games/QuestionEditor.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 
 import avatar from "assets/img/agility-tuts.png";
+import {  storeToken } from '../store/user/actions';
 
 class UpdateGame extends Component {
   questionSelected(){
@@ -38,6 +39,11 @@ class UpdateGame extends Component {
       return this.props.questions.questions.find(x => x.id === this.props.questions.selectedId);
     }else{
       return this.props.games.questionStructure;
+    }
+  }
+  componentDidMount(){
+    if(this.props.cookies.get('AuthToken')){
+      this.props.storeToken(this.props.cookies.get('AuthToken'));
     }
   }
   render() {  
@@ -122,4 +128,9 @@ const mapStateToProps = (state) => {
       games: state.games,
   };
 };
-export default withCookies(connect(mapStateToProps)(UpdateGame));
+const mapDispatchToProps = (dispatch) => {
+  return {
+      storeToken: (authToken) => dispatch(storeToken(authToken)),
+  };
+};
+export default withCookies(connect(mapStateToProps, mapDispatchToProps)(UpdateGame));

@@ -35,12 +35,19 @@ import QuestionTable from "components/AcadEntity/QuestionTable";
 
 import Button from "components/CustomButton/CustomButton.jsx";
 import { questionCreating } from '../store/questions/actions';
+import {  storeToken } from '../store/user/actions';
 
 class GameList extends Component {
   createQuestion(){
     this.props.questionCreating();
   }
+  componentDidMount(){
+    if(this.props.cookies.get('AuthToken')){
+      this.props.storeToken(this.props.cookies.get('AuthToken'));
+    }
+  }
   render() {
+    
     return (this.props.cookies.get('AuthToken') === undefined)? (
       <Redirect to="/auth/login-page" />
           ) : (
@@ -128,7 +135,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-      questionCreating : () => dispatch(questionCreating())
+      questionCreating : () => dispatch(questionCreating()),
+      storeToken: (authToken) => dispatch(storeToken(authToken)),
   };
 };
 export default withCookies(connect(mapStateToProps, mapDispatchToProps) (GameList));

@@ -16,6 +16,12 @@ export function loginSuccess(user) {
       user
   };
 }
+export function storeToken(authToken) {
+  return {
+      type: 'STORE_TOKEN',
+      authToken
+  };
+}
 export function performLogin({email,password, cookies}) {
   return (dispatch) => {
       dispatch(loginInProgress(true));
