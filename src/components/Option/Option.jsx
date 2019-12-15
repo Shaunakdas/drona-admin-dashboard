@@ -23,6 +23,13 @@ import InputText from "../Attribute/InputText"
 import Selector from "../Attribute/Selector"
 
 class Option extends Component {
+  constructor(props){
+    super(props);
+    this.editor = this.editor.bind(this);
+  }
+  editor(field, value){
+    this.props.updateOptionList(this.props.optionIndex, field,value)
+  }
   render() {
     let optionObj = this.props.option;
     return (
@@ -47,6 +54,7 @@ class Option extends Component {
                   input={optionObj.answer}
                   field="answer"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             {/* Index */}
@@ -59,6 +67,7 @@ class Option extends Component {
                   input={optionObj.index}
                   field="index"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             {
@@ -70,6 +79,7 @@ class Option extends Component {
                   input={optionObj.display}
                   field="display"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             {/* Hint */}
@@ -82,6 +92,7 @@ class Option extends Component {
                   input={optionObj.hint}
                   field="hint"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             {/* Title */}
@@ -94,6 +105,7 @@ class Option extends Component {
                   input={optionObj.title}
                   field="title"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             {/* Value Type */}
@@ -106,6 +118,7 @@ class Option extends Component {
                   input={optionObj.value_type}
                   field="value_type"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             {/* Key */}
@@ -118,6 +131,7 @@ class Option extends Component {
                   input={optionObj.key}
                   field="key"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             {/* Value */}
@@ -130,6 +144,7 @@ class Option extends Component {
                   input={optionObj.value}
                   field="value"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             {/* Option Index */}
@@ -142,6 +157,7 @@ class Option extends Component {
                   input={optionObj.option_index}
                   field="option_index"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             {/* Upper */}
@@ -154,6 +170,7 @@ class Option extends Component {
                   input={optionObj.upper}
                   field="upper"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             {/* Lower */}
@@ -166,6 +183,7 @@ class Option extends Component {
                   input={optionObj.lower}
                   field="lower"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             {/* Attempted */}
@@ -178,6 +196,7 @@ class Option extends Component {
                   input={optionObj.attempted}
                   field="attempted"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             {/* Sequence */}
@@ -190,6 +209,7 @@ class Option extends Component {
                   input={optionObj.sequence}
                   field="sequence"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
 
@@ -202,6 +222,7 @@ class Option extends Component {
                   isChecked={optionObj.correct}
                   field="correct"
                   attributes={optionObj}
+                  editor={this.editor}
                 />
             }
             <div className="clearfix" />

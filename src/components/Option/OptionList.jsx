@@ -17,19 +17,81 @@
 */
 import React, { Component } from "react";
 import Option from "components/Option/Option";
+import Button from "components/CustomButton/CustomButton.jsx";
 
 class OptionList extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      optionStructure: props.options[0],
+      options: props.options,
+      finalOptions: this.updateOptionListValues(props.options)
+    }
+    this.updateOptionList = this.updateOptionList.bind(this);
+  }
+
+  // Button for adding an option
+  addButton(){
+    this.setState(state => {
+      const options = [...state.options, state.optionStructure];
+      return {
+        ...state,
+        options,
+      };
+    });
+  }
+
+  // Function to update finalOption List in state, which wil be used to question option list
+  updateOptionList(optionIndex, field, value){
+    let finalOptions = [...this.state.finalOptions];
+    let option = {
+      ...finalOptions[optionIndex],
+      [field]: value
+    }
+    finalOptions[optionIndex]= option;
+    this.setState(state => {
+      return {
+        ...state,
+        finalOptions,
+      };
+    });
+    this.props.editor( finalOptions);
+  }
+
+  // Function to update all default values of options array copy to be null.
+  updateOptionListValues(options){
+    return options.map(option => this.updateValues(option));
+  }
+  updateValues(optionObj){
+    Object.keys(optionObj).forEach(function(key) {
+      if(key === "entity_type"){
+        return;
+      }
+      if (/string|bool|sequence|positive_integer/.test(optionObj[key])) {
+        optionObj[key] = null;
+      }
+    });
+    return optionObj;
+  }
+
   render() {
-    let options = this.props.options;
     return (
       <div>
         {
-          options.map((option) => {
+          this.state.options.map((option, optionIndex) => {
             return (
-              <Option option={option} />
+              <Option
+                option={option}
+                optionIndex={optionIndex}
+                updateOptionList={this.updateOptionList} />
             )
           })
         }
+        <Button
+          bsStyle="info"
+          onClick={() => this.addButton()} >
+          Add Option
+        </Button>
       </div>
       
     );

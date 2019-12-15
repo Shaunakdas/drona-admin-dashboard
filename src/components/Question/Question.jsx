@@ -34,6 +34,7 @@ class Question extends Component {
       finalObj: {},
     }
     this.editor = this.editor.bind(this);
+    this.optionListEditor = this.optionListEditor.bind(this);
   }
   editor(field, value){
     this.setState(prevState => ({
@@ -42,6 +43,14 @@ class Question extends Component {
           [field]: value       // update the value of specific key
       }
   }))
+  }
+  optionListEditor(options){
+    this.setState(prevState => ({
+      finalObj: {                   // object that we want to update
+          ...prevState.finalObj,    // keep all other key-value pairs
+          options: options       // update the value of specific key
+        }
+    }))
   }
   //Backup function
   updateValues(questionObj){
@@ -85,6 +94,7 @@ class Question extends Component {
                 rows="5"
                 field="section_question"
                 attributes={questionObj}
+                editor={this.editor}
               />
               {/* Time */}
               <InputText 
@@ -93,6 +103,7 @@ class Question extends Component {
                 rows="1"
                 field="time"
                 attributes={questionObj}
+                editor={this.editor}
               />
               {/* Tip */}
               <InputText 
@@ -101,6 +112,7 @@ class Question extends Component {
                 rows="2"
                 field="tip"
                 attributes={questionObj}
+                editor={this.editor}
               />
               {/* Bubble */}
               <InputText 
@@ -109,6 +121,7 @@ class Question extends Component {
                 rows="1"
                 field="bubble"
                 attributes={questionObj}
+                editor={this.editor}
               />
               {/* Correct Option Count */}
               <InputText 
@@ -117,6 +130,7 @@ class Question extends Component {
                 rows="1"
                 field="correct_option_count"
                 attributes={questionObj}
+                editor={this.editor}
               />
 
               {/* Tips */}
@@ -179,6 +193,7 @@ class Question extends Component {
                             rows="2"
                             field="hint"
                             attributes={questionObj}
+                            editor={this.editor}
                         />
                           : 
                           <div>
@@ -214,6 +229,7 @@ class Question extends Component {
                           input={questionObj.answer}
                           rows="2"
                           field="answer"
+                          editor={this.editor}
                         />
                     }
                   </div>
@@ -226,6 +242,7 @@ class Question extends Component {
                 input={questionObj.type}
                 field="type"
                 attributes={questionObj}
+                editor={this.editor}
               />
               {/* Title */}
               <InputText 
@@ -234,6 +251,7 @@ class Question extends Component {
                 input={questionObj.title}
                 field="title"
                 attributes={questionObj}
+                editor={this.editor}
               />
               {/* Mode */}
               <InputText 
@@ -242,6 +260,7 @@ class Question extends Component {
                 input={questionObj.mode}
                 field="mode"
                 attributes={questionObj}
+                editor={this.editor}
               />
 
 
@@ -283,7 +302,9 @@ class Question extends Component {
               {
                 (questionObj.options === undefined)?
                   null : 
-                  <OptionList options={questionObj.options}/>
+                  <OptionList
+                    options={questionObj.options}
+                    editor={this.optionListEditor}/>
               }
               <div className="clearfix" />
             </form>
