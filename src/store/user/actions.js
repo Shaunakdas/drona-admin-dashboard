@@ -16,7 +16,7 @@ export function loginSuccess(user) {
       user
   };
 }
-export function performLogin({email,password}) {
+export function performLogin({email,password, cookies}) {
   return (dispatch) => {
       dispatch(loginInProgress(true));
 
@@ -41,8 +41,9 @@ export function performLogin({email,password}) {
             if (user.error) {
               dispatch(loginHasErrored(user.error));
             }else{
+              cookies.set('AuthToken', user.auth_token, { path: '/', domain: 'docgenius.in' });
               dispatch(loginSuccess(user))
-            }
+              }
             })
           .catch((errorMsg) => dispatch(loginHasErrored(errorMsg)));
   };

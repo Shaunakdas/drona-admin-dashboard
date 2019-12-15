@@ -16,6 +16,7 @@
 */
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { withCookies } from 'react-cookie';
 import { Redirect } from "react-router-dom";
 import {
   Grid,
@@ -54,23 +55,17 @@ class LoginPage extends Component {
     return this.state.email.length > 0 && this.state.password.length > 0;
   }
 
-
-  handleSubmit(event) {
-    // event.preventDefault();
-    this.props.performLogin({
-      email: this.state.email,
-      password: this.state.password
-    });
-  }
   handleClick(event) {
     // event.preventDefault();
+    const { cookies } = this.props;
     this.props.performLogin({
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      cookies
     });
   }
   render() {
-    return (this.props.user.loggedIn)? (
+    return (!(this.props.cookies.get('AuthToken') === undefined))? (
       <Redirect to="/" />
           ) : (
       <Grid>
@@ -132,7 +127,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    performLogin: ({email,password}) => dispatch(performLogin({email,password}))
+    performLogin: ({email,password, cookies}) => dispatch(performLogin({email,password, cookies}))
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default withCookies(connect(mapStateToProps, mapDispatchToProps)(LoginPage));

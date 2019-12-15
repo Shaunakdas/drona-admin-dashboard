@@ -17,6 +17,8 @@
 */
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { withCookies } from 'react-cookie';
+import { Redirect } from "react-router-dom";
 import {
   Grid,
   Row,
@@ -39,7 +41,9 @@ class UpdateGame extends Component {
     }
   }
   render() {  
-    return (
+    return (this.props.cookies.get('AuthToken') === undefined)? (
+      <Redirect to="/auth/login-page" />
+          ) :  (
       <div className="content">
         <Grid fluid>
           <Row>
@@ -118,4 +122,4 @@ const mapStateToProps = (state) => {
       games: state.games,
   };
 };
-export default connect(mapStateToProps)(UpdateGame);
+export default withCookies(connect(mapStateToProps)(UpdateGame));

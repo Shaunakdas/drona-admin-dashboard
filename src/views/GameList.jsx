@@ -17,6 +17,7 @@
 */
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { withCookies } from 'react-cookie';
 import { Redirect,NavLink } from "react-router-dom";
 import {
   Grid,
@@ -40,7 +41,7 @@ class GameList extends Component {
     this.props.questionCreating();
   }
   render() {
-    return (!this.props.user.loggedIn)? (
+    return (this.props.cookies.get('AuthToken') === undefined)? (
       <Redirect to="/auth/login-page" />
           ) : (
       <div className="content">
@@ -130,4 +131,4 @@ const mapDispatchToProps = (dispatch) => {
       questionCreating : () => dispatch(questionCreating())
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps) (GameList);
+export default withCookies(connect(mapStateToProps, mapDispatchToProps) (GameList));
