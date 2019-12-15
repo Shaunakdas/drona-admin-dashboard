@@ -22,6 +22,11 @@ export function questionSelected(questionId) {
       questionId
   };
 }
+export function questionCreating(){
+  return {
+      type: 'QUESTIONS_CREATING'
+  };
+}
 export function questionsFetchData(gameId) {
   return (dispatch) => {
       dispatch(questionsIsLoading(true));

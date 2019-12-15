@@ -7,8 +7,10 @@ export function questions(state = initialState, action) {
         return { ...state, isLoading: false, questions: action.questions.game_holder_detail.question_input.sections };
     case 'QUESTIONS_HAS_ERRORED': 
         return { ...state, isLoading: false, errorMessage: 'action.payload.message' };
-    case 'QUESTION_SELECTED': 
-        return { ...state, selectedId: action.questionId };
+    case 'QUESTION_SELECTED':
+        return { ...state, openForEditing: true, openForCreating: false, selectedId: action.questionId };
+    case 'QUESTION_CREATING':
+        return { ...state, openForEditing: false, openForCreating: true, selectedId: action.questionId };
     case 'QUESTION_UPDATE_PENDING': 
         return { ...state, isQuestionUpdatePending: true };
     case 'QUESTION_UPDATE_SUCCESS':

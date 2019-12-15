@@ -4,13 +4,14 @@ import {
     Table,
     Button
   } from "react-bootstrap";
-  import { gamesFetchData, gameSelected } from '../../store/games/actions';
+  import { gamesFetchData, gameSelected, gameFetchQuestionStructure } from '../../store/games/actions';
   import { questionsFetchData } from '../../store/questions/actions';
 
  class GameTable extends Component {
     gameSelection(gameKey){
         let selectedGame = this.props.games.games[gameKey];
         this.props.questionsFetchData(selectedGame.id);
+        this.props.gameFetchQuestionStructure(selectedGame.id);
         this.props.gameSelected(selectedGame);
     }
     render() {
@@ -61,6 +62,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
       fetchData: () => dispatch(gamesFetchData()),
       questionsFetchData: (gameId) => dispatch(questionsFetchData(gameId)),
+      gameFetchQuestionStructure: (gameId) => dispatch(gameFetchQuestionStructure(gameId)),
       gameSelected : (game) => dispatch(gameSelected(game)),
       
   };

@@ -31,8 +31,12 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import avatar from "assets/img/agility-tuts.png";
 
 class UpdateGame extends Component {
-  questionSelected(questions){
-    return questions.questions.find(x => x.id === questions.selectedId)
+  questionSelected(){
+    if (this.props.questions.openForEditing){
+      return this.props.questions.questions.find(x => x.id === this.props.questions.selectedId);
+    }else{
+      return this.props.games.questionStructure;
+    }
   }
   render() {  
     return (
@@ -96,7 +100,7 @@ class UpdateGame extends Component {
           <Row>
           {/* {gameComponent} */}
           
-          <QuestionEditor question={this.questionSelected(this.props.questions)}/>
+          <QuestionEditor question={this.questionSelected()}/>
           
           <Button bsStyle="info" pullRight fill type="submit">
               Update Question
@@ -110,7 +114,8 @@ class UpdateGame extends Component {
 
 const mapStateToProps = (state) => {
   return {
-      questions: state.questions
+      questions: state.questions,
+      games: state.games,
   };
 };
 export default connect(mapStateToProps)(UpdateGame);

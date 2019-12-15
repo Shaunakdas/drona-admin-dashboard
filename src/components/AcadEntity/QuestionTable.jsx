@@ -33,7 +33,7 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
                   this.props.questions.questions.map((question, i) => (
                     <tr key={`${question.id}-${i}`}>
                         <td key={question.id}>{question.id}</td>
-                        <td key={question.id}>{'-'}</td>
+                        <td key={`${question.id}-${i}${i}`}>{'-'}</td>
                         <td key={question.question}>{question.question}</td>
                         <td key={"key"}>
                             <DropdownButton title="Edit">

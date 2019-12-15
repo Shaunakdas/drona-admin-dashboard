@@ -17,7 +17,7 @@
 */
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Redirect } from "react-router-dom";
+import { Redirect,NavLink } from "react-router-dom";
 import {
   Grid,
   Row,
@@ -33,9 +33,12 @@ import  GameTable  from "components/AcadEntity/GameTable";
 import QuestionTable from "components/AcadEntity/QuestionTable";
 
 import Button from "components/CustomButton/CustomButton.jsx";
-
+import { questionCreating } from '../store/questions/actions';
 
 class GameList extends Component {
+  createQuestion(){
+    this.props.questionCreating();
+  }
   render() {
     return (!this.props.user.loggedIn)? (
       <Redirect to="/auth/login-page" />
@@ -86,9 +89,16 @@ class GameList extends Component {
                   Question Count: 40
                 </p>
                 <div className="description text-center">
-                <Button bsStyle="info" fill type="submit">
-                            New Question
-                          </Button>
+                {
+                  ("questionStructure" in this.props.games)?
+                  (<NavLink to="game/edit">
+                      <Button bsStyle="info" fill onClick={() => this.createQuestion()}>
+                        New Question
+                      </Button>
+                    </NavLink>)
+                  : null
+                }
+                
                 </div>
                 
                 
@@ -111,7 +121,13 @@ class GameList extends Component {
 
 const mapStateToProps = (state) => {
   return {
-      user: state.user
+      user: state.user,
+      games: state.games
   };
 };
-export default connect(mapStateToProps, null) (GameList);
+const mapDispatchToProps = (dispatch) => {
+  return {
+      questionCreating : () => dispatch(questionCreating())
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps) (GameList);

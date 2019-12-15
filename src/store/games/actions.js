@@ -47,3 +47,46 @@ export function gamesFetchData(chapterId) {
           .catch(() => dispatch(gamesHasErrored(true)));
   };
 }
+export function gameQuestionStructureHasErrored(bool) {
+  return {
+      type: 'GAME_QUESTION_STRUCTURE_HAS_ERRORED',
+      hasErrored: bool
+  };
+}
+export function gameQuestionStructureIsLoading(bool) {
+  return {
+      type: 'GAME_QUESTION_STRUCTURE_IS_LOADING',
+      isLoading: bool
+  };
+}
+export function gameFetchQuestionStructureSuccess(questionStructure) {
+  return {
+      type: 'GAME_FETCH_QUESTION_STRUCTURE_DATA_SUCCESS',
+      questionStructure
+  };
+}
+export function gameFetchQuestionStructure(gameId) {
+  return (dispatch) => {
+      dispatch(gameQuestionStructureIsLoading(true));
+
+      fetch(`${process.env.REACT_APP_DRONA_BACKEND}/api/v1/question/${gameId}/structure`, {
+        method: 'get',
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization':process.env.REACT_APP_AUTH_TOKEN
+        }
+       })
+          .then((response) => {
+              if (!response.ok) {
+                  throw Error(response.statusText);
+              }
+
+              dispatch(gameQuestionStructureIsLoading(false));
+
+              return response;
+          })
+          .then((response) => response.json())
+          .then((questionStructure) => dispatch(gameFetchQuestionStructureSuccess(questionStructure)))
+          .catch(() => dispatch(gameQuestionStructureHasErrored(true)));
+  };
+}
