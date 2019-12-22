@@ -26,7 +26,6 @@ import OptionList from "components/Option/OptionList";
 import NumberLine from "./NumberLine";
 import Button from "components/CustomButton/CustomButton.jsx";
 
-import { bool } from "prop-types";
 import {  questionCreateCalled } from '../../store/questions/actions';
 
 class Question extends Component {
@@ -72,7 +71,7 @@ class Question extends Component {
       this.props.games.selected.id);
   }
   render() {
-    let questionObj = this.props.questionObj;
+    const {questionObj} = this.props;
     return (
         <Card
           title="Question"
@@ -188,47 +187,36 @@ class Question extends Component {
                   </div>
               }
               {/* Hint */}
-              {
-                (questionObj.hint === undefined)?
-                  null : 
-                    <div>
-                      {
-                        (typeof questionObj.hint === 'string') || ( questionObj.hint === null)?
-                        <InputText 
-                            title="Hint"
-                            input={questionObj.hint}
-                            rows="2"
-                            field="hint"
-                            attributes={questionObj}
-                            editor={this.editor}
-                        />
-                          : 
-                          <div>
-                            <InputText 
-                              title="Hint Before attempt"
-                              input={questionObj.hint.question}
-                              rows="2"
-                            />
-                          
-                            <InputText 
-                              title="Hint After Attempt"
-                              input={questionObj.hint.solution}
-                              rows="2"
-                            />
-                          </div>
-                      }
-                    </div>
-              }
+              <InputText 
+                title="Hint Content"
+                input={questionObj.hint_content}
+                rows="3"
+                field="hint_content"
+                attributes={questionObj}
+                editor={this.editor}
+              />
+              {/* Solution */}
+              <InputText 
+                title="Solution"
+                input={questionObj.solution}
+                rows="3"
+                field="solution"
+                attributes={questionObj}
+                editor={this.editor}
+              />
               {/* Correct */}
               {
                 (questionObj.answer === undefined)?
                   null : 
                   <div>
                     {
-                      (typeof questionObj.answer === bool)?
+                      (typeof questionObj.answer === "boolean")?
                         <Selector 
                           title="Correct"
                           isChecked={questionObj.answer}
+                          field="answer"
+                          editor={this.editor}
+                          attributes={questionObj}
                         />
                         :
                         <InputText 

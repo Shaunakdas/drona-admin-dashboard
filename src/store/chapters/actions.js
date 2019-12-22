@@ -26,7 +26,7 @@ export function chaptersFetchData(standardId) {
   return (dispatch) => {
       dispatch(chaptersIsLoading(true));
 
-      fetch(`${process.env.REACT_APP_DRONA_BACKEND}/api/v1/chapters?standard_id=${standardId}`, {
+      fetch(`${process.env.REACT_APP_DRONA_BACKEND}/api/v1/chapters?standard_id=${standardId}&limit=15`, {
         method: 'get',
         headers: {
           'Content-Type':'application/json',

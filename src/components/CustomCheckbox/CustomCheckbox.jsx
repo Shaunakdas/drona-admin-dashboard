@@ -25,6 +25,7 @@ class CustomCheckbox extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick() {
+    this.props.toggleChange();
     this.setState({ is_checked: !this.state.is_checked });
   }
   render() {

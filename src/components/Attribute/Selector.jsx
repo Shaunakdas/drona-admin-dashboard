@@ -16,6 +16,7 @@
 
 */
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import {
   Row,
   Col,
@@ -23,28 +24,61 @@ import {
   ControlLabel
 } from "react-bootstrap";
 import Checkbox from "components/CustomCheckbox/CustomCheckbox.jsx";
+import { questionUpdateCalled } from '../../store/questions/actions';
+import { optionUpdateCalled } from '../../store/questions/actions';
 
-class InputText extends Component {
+class Selector extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      isChecked: props.isChecked,
+    }
+    this.toggleChange = this.toggleChange.bind(this);
+  }
+  toggleChange = () => {
+    const { editor, field, attributes, questionUpdateCalled, optionUpdateCalled } = this.props;
+    editor(field, !this.state.isChecked);
+    const {id, entity_type} = attributes;
+    const updateParams = {
+      id,
+      entity_type,
+      [field]: !this.state.isChecked
+    }
+    if(entity_type === "game_question"){
+      questionUpdateCalled(updateParams);
+    }else{
+      optionUpdateCalled(updateParams);
+    }
+    this.setState({
+      isChecked: !this.state.isChecked,
+    });
+  }
   render() {
     return (
       <Row>
         <Col md={6}>
           <FormGroup controlId="formControlsTextarea">
             <ControlLabel>
-              {this.props.title}
+              {this.props.title} Flag
             </ControlLabel>
             <Checkbox
-              isChecked={this.props.isChecked}
+              toggleChange={this.toggleChange}
+              isChecked={this.state.isChecked}
+              number={this.props.attributes.id}
+              label={this.state.isChecked? 'Correct' : 'Incorrect'}
             />
+            
           </FormGroup>
-        </Col>
-        <Col md={6}>
-          <ControlLabel>Final {this.props.title}</ControlLabel>
-          <h5 className="title">What</h5>
         </Col>
       </Row>
     );
   }
 }
 
-export default InputText;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    questionUpdateCalled: (question) => dispatch(questionUpdateCalled(question)),
+    optionUpdateCalled: (option) => dispatch(optionUpdateCalled(option))
+  };
+};
+export default connect(null, mapDispatchToProps)(Selector);

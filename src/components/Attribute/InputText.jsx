@@ -155,6 +155,7 @@ class InputText extends Component {
             <BlockMath strict={'warn'} trust={false}>{convertToKatex(this.state.value)}</BlockMath>
             
           </Col>
+          <hr />
         </Row>
     );
   }
