@@ -27,7 +27,6 @@ import {
 import 'katex/dist/katex.min.css';
 import {  BlockMath } from 'react-katex';
 import Card from "components/Card/Card";
-import MathJax from 'react-mathjax';
 import { questionUpdateCalled } from '../../store/questions/actions';
 import { optionUpdateCalled } from '../../store/questions/actions';
 
@@ -37,17 +36,21 @@ const convertToKatex = (texString) => {
    updatedText = updatedText.toString().replace(/\\bg\[07c\]{\\color\[cyan\]/g, '{');
   return updatedText;
 }
-class InputText extends Component {
+class Dropdown extends Component {
   constructor(props){
     super(props)
     this.state = {
       name: props.name,
       type: props.type||'text',
-      value: this.props.openForCreating? '': (props.input||''),
+      value: this.props.openForCreating? this.optionList()[0] : (props.input||''),
       editClassName: props.editClassName,
       edit: false,
       rows: props.rows
     }
+  }
+  optionList = () => {
+    const { attributes,field } = this.props;
+    return attributes[`_${field}`].split(',');
   }
 
   coreComponent(){
@@ -62,70 +65,56 @@ class InputText extends Component {
   createComponent(){
     return (
       <FormControl
-        rows={this.props.rows}
-        componentClass="textarea"
-        bsClass="form-control"
-        placeholder={`Here can be your ${this.props.field}`}
+        componentClass="select"  
+        name={this.state.name}
+        type={this.state.type}
+        value={this.optionList()[0]}
         onChange={event=>{
           this.setState({value:event.target.value});
           this.props.editor(this.props.field, event.target.value);
         }}
-      />
+      >
+        {
+          this.optionList().map((option, key) => {
+            return <option key={key}>{option}</option>
+          })
+        }
+      </FormControl>
     );
   }
   
   editComponent() {
+    const { field, attributes, questionUpdateCalled, optionUpdateCalled} = this.props;
+    const {id, entity_type} = attributes;
+    
+    
     return (
-      this.state.edit===true&&
       <FormControl
-        rows={this.state.rows}
-        componentClass="textarea"  
+        componentClass="select"  
         name={this.state.name}
         type={this.state.type}
         value={this.state.value}
-        className={this.state.editClassName}
-        autoFocus
-        onFocus={event=>{
-          const value = event.target.value
-          event.target.value = ''
-          event.target.value = value
-          this.setState({backup:this.state.value})
-        }}
         onChange={event=>{
           this.setState({value:event.target.value})
-        }}
-        onBlur={event=>{
-          this.setState({edit:false})
-          const {id, entity_type} = this.props.attributes;
+          this.props.editor(this.props.field, event.target.value);
           const updateParams = {
             id,
             entity_type,
-            [this.props.field]: event.target.value
+            [field]: event.target.value
           }
           if(entity_type === "game_question"){
-            this.props.questionUpdateCalled(updateParams);
+            questionUpdateCalled(updateParams);
           }else{
-            this.props.optionUpdateCalled(updateParams);
+            optionUpdateCalled(updateParams);
           }
         }}
-        onKeyUp={event=>{
-          if(event.key==='Escape') {
-            this.setState({edit:false, value:this.state.backup})
-          }
-        }}
-      />
-      ||
-      <FormGroup controlId="formControlsTextarea">
-        <Card
-          content={this.state.value}
-          md={6}
-          block={true}
-          onClick={event=>{
-            this.setState({edit:this.state.edit!==true})
-          }}>
-          
-        </Card>
-      </FormGroup>
+      >
+        {
+          this.optionList().map((option, key) => {
+            return <option key={key}>{option}</option>
+          })
+        }
+      </FormControl>
     )
   }
   render() {
@@ -146,8 +135,7 @@ class InputText extends Component {
           </Col>
           <Col md={6} style={btn}>
             <ControlLabel>Final {this.props.title}</ControlLabel>
-            <BlockMath strict={'warn'} trust={false}>{convertToKatex(this.state.value)}</BlockMath>
-            
+            <BlockMath strict={'warn'} trust={false}>{this.state.value}</BlockMath>
           </Col>
           <hr />
         </Row>
@@ -166,4 +154,4 @@ const mapDispatchToProps = (dispatch) => {
     optionUpdateCalled: (option) => dispatch(optionUpdateCalled(option))
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(InputText);
+export default connect(mapStateToProps, mapDispatchToProps)(Dropdown);

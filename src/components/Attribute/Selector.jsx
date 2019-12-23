@@ -31,27 +31,41 @@ class Selector extends Component {
   constructor(props){
     super(props)
     this.state = {
-      isChecked: props.isChecked,
+      isChecked: (typeof props.isChecked === "boolean")? props.isChecked : false,
     }
     this.toggleChange = this.toggleChange.bind(this);
   }
   toggleChange = () => {
-    const { editor, field, attributes, questionUpdateCalled, optionUpdateCalled } = this.props;
-    editor(field, !this.state.isChecked);
+    const { editor, field, openForEditing } = this.props;
+    const newCheckedStatus = !this.state.isChecked
+    editor(field, newCheckedStatus);
+    if(openForEditing){
+      this.triggerUpdateAPI(newCheckedStatus);
+    }
+    this.setState({
+      isChecked: newCheckedStatus,
+    });
+  }
+  triggerUpdateAPI = (newCheckedStatus) => {
+    const { field, attributes, questionUpdateCalled, optionUpdateCalled } = this.props;
     const {id, entity_type} = attributes;
     const updateParams = {
       id,
       entity_type,
-      [field]: !this.state.isChecked
+      [field]: newCheckedStatus
     }
     if(entity_type === "game_question"){
       questionUpdateCalled(updateParams);
     }else{
       optionUpdateCalled(updateParams);
     }
-    this.setState({
-      isChecked: !this.state.isChecked,
-    });
+  }
+  getId = () => {
+    const { attributes } = this.props;
+    if("id" in attributes){
+      return attributes.id;
+    }
+    return 1;
   }
   render() {
     return (
@@ -64,7 +78,7 @@ class Selector extends Component {
             <Checkbox
               toggleChange={this.toggleChange}
               isChecked={this.state.isChecked}
-              number={this.props.attributes.id}
+              number={this.getId()}
               label={this.state.isChecked? 'Correct' : 'Incorrect'}
             />
             
@@ -75,10 +89,16 @@ class Selector extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    openForEditing: state.questions.openForEditing,
+    openForCreating: state.questions.openForCreating
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     questionUpdateCalled: (question) => dispatch(questionUpdateCalled(question)),
     optionUpdateCalled: (option) => dispatch(optionUpdateCalled(option))
   };
 };
-export default connect(null, mapDispatchToProps)(Selector);
+export default connect(mapStateToProps, mapDispatchToProps)(Selector);

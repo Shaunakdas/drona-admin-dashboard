@@ -22,6 +22,7 @@ import { connect } from 'react-redux';
 import Card from "components/Card/Card.jsx";
 import InputText from "../Attribute/InputText"
 import Selector from "../Attribute/Selector"
+import Dropdown from "../Attribute/DropDown"
 import OptionList from "components/Option/OptionList";
 import NumberLine from "./NumberLine";
 import Button from "components/CustomButton/CustomButton.jsx";
@@ -55,11 +56,12 @@ class Question extends Component {
   }
   //Backup function
   updateValues(questionObj){
+    const { openForCreating } = this.props;
     Object.keys(questionObj).forEach(function(key) {
       if(key === "entity_type"){
         return;
       }
-      if (/string|bool|sequence|positive_integer/.test(questionObj[key])) {
+      if (openForCreating && (/string|bool|sequence|positive_integer/.test(questionObj[key]))) {
         questionObj[key] = null;
       }
     });
@@ -71,7 +73,14 @@ class Question extends Component {
       this.props.games.selected.id);
   }
   render() {
-    const {questionObj} = this.props;
+    const {questionObj, openForCreating, openForEditing} = this.props;
+    const selectorCheck = (openForEditing && (typeof questionObj.answer === "boolean"))||(openForCreating && (questionObj.answer === "bool"))
+    let dropdownCheck = field => {
+      if(openForEditing && `_${field}` in questionObj && (/mode|type/.test(field))){
+        return true;
+      }
+      return openForCreating && questionObj[field] === "dropdown";
+    }
     return (
         <Card
           title="Question"
@@ -210,7 +219,7 @@ class Question extends Component {
                   null : 
                   <div>
                     {
-                      (typeof questionObj.answer === "boolean")?
+                      selectorCheck?
                         <Selector 
                           title="Correct"
                           isChecked={questionObj.answer}
@@ -249,14 +258,33 @@ class Question extends Component {
                 editor={this.editor}
               />
               {/* Mode */}
-              <InputText 
-                title="Mode"
-                rows="2"
-                input={questionObj.mode}
-                field="mode"
-                attributes={questionObj}
-                editor={this.editor}
-              />
+              {
+                (questionObj.mode === undefined)?
+                  null : 
+                  <div>
+                    {
+                      dropdownCheck('mode')?
+                        <Dropdown 
+                          title="Mode"
+                          input={questionObj.mode}
+                          field="mode"
+                          editor={this.editor}
+                          attributes={questionObj}
+                        />
+                        :
+                        <InputText 
+                          title="Mode"
+                          rows="2"
+                          input={questionObj.mode}
+                          field="mode"
+                          attributes={questionObj}
+                          editor={this.editor}
+                        />
+                    }
+                  </div>
+                  
+              }
+              
 
 
               {/* Blocks */}
@@ -316,7 +344,9 @@ class Question extends Component {
 const mapStateToProps = (state) => {
   return {
       questions: state.questions,
-      games: state.games
+      games: state.games,
+      openForCreating: state.questions.openForCreating,
+      openForEditing: state.questions.openForEditing
   };
 };
 const mapDispatchToProps = (dispatch) => {
