@@ -43,23 +43,58 @@ class InputText extends Component {
     this.state = {
       name: props.name,
       type: props.type||'text',
-      value: this.props.openForCreating? '': (props.input||''),
+      value: this.initialValue(props),
       editClassName: props.editClassName,
       edit: false,
       rows: props.rows
     }
   }
 
-  coreComponent(){
-    if(this.props.openForEditing){
-      return this.editComponent();
+  inputType = (props) => {
+    const { openForCreating, openForEditing, attributes, field} = props;
+    if (this.dropdownCheck(openForCreating, openForEditing, attributes, field)){
+      return "dropdown";
     }
-    if(this.props.openForCreating){
-      return this.createComponent();
-    }
-    return null;
+    return "input";
   }
-  createComponent(){
+  dropdownCheck = (openForCreating, openForEditing, attributes, field) => {
+    if(openForEditing && `_${field}` in attributes && (/mode|type/.test(field))){
+      return true;
+    }
+    return openForCreating && attributes[field] === "dropdown";
+  }
+  initialValue = (props) => {
+    switch(this.inputType(props)) {
+      case("dropdown"):
+        return props.openForCreating? this.optionList()[0] : (props.input||'')
+      case("input"):
+        return props.openForCreating? '': (props.input||'')
+      case("german"):
+        return "German Shepherds are good boys and girls."
+      default:
+        return null
+    }
+  }
+
+  optionList = () => {
+    const { attributes,field } = this.props;
+    return attributes[`_${field}`].split(',');
+  }
+
+  coreComponent(){
+    const { openForEditing } = this.props;
+    switch(this.inputType(this.props)) {
+      case("dropdown"):
+        return openForEditing? this.editDropdownComponent() : this.createDropdownComponent()
+      case("input"):
+        return openForEditing? this.editInputComponent() : this.createInputComponent()
+      case("german"):
+        return "German Shepherds are good boys and girls."
+      default:
+        return null
+    }
+  }
+  createInputComponent(){
     return (
       <FormControl
         rows={this.props.rows}
@@ -74,7 +109,7 @@ class InputText extends Component {
     );
   }
   
-  editComponent() {
+  editInputComponent() {
     return (
       this.state.edit===true&&
       <FormControl
@@ -128,8 +163,68 @@ class InputText extends Component {
       </FormGroup>
     )
   }
+  createDropdownComponent(){
+    return (
+      <FormControl
+        componentClass="select"  
+        name={this.state.name}
+        type={this.state.type}
+        value={this.optionList()[0]}
+        onChange={event=>{
+          this.setState({value:event.target.value});
+          this.props.editor(this.props.field, event.target.value);
+        }}
+      >
+        {
+          this.optionList().map((option, key) => {
+            return <option key={key}>{option}</option>
+          })
+        }
+      </FormControl>
+    );
+  }
+  
+  editDropdownComponent() {
+    const { field, attributes, questionUpdateCalled, optionUpdateCalled} = this.props;
+    const {id, entity_type} = attributes;
+    
+    
+    return (
+      <FormControl
+        componentClass="select"  
+        name={this.state.name}
+        type={this.state.type}
+        value={this.state.value}
+        onChange={event=>{
+          this.setState({value:event.target.value})
+          this.props.editor(this.props.field, event.target.value);
+          const updateParams = {
+            id,
+            entity_type,
+            [field]: event.target.value
+          }
+          if(entity_type === "game_question"){
+            questionUpdateCalled(updateParams);
+          }else{
+            optionUpdateCalled(updateParams);
+          }
+        }}
+      >
+        {
+          this.optionList().map((option, key) => {
+            return <option key={key}>{option}</option>
+          })
+        }
+      </FormControl>
+    )
+  }
+  
   render() {
+    // const { inputType } = this.props;
     const btn ={backgroundColor: '#10bcf1'};
+    const finalValue = (value) => {
+      return this.inputType(this.props) === "input" ? convertToKatex(value) : value;
+    }
     return (
       (this.props.input === undefined)?
         null : 
@@ -146,7 +241,7 @@ class InputText extends Component {
           </Col>
           <Col md={6} style={btn}>
             <ControlLabel>Final {this.props.title}</ControlLabel>
-            <BlockMath strict={'warn'} trust={false}>{convertToKatex(this.state.value)}</BlockMath>
+            <BlockMath strict={'warn'} trust={false}>{finalValue(this.state.value)}</BlockMath>
             
           </Col>
           <hr />

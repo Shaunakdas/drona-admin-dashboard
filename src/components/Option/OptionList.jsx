@@ -25,7 +25,7 @@ class OptionList extends Component {
     this.state = {
       optionStructure: props.options[0],
       options: props.options,
-      finalOptions: this.updateOptionListValues(props.options)
+      finalOptions: props.options
     }
     this.updateOptionList = this.updateOptionList.bind(this);
   }

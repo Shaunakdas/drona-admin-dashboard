@@ -22,7 +22,6 @@ import { connect } from 'react-redux';
 import Card from "components/Card/Card.jsx";
 import InputText from "../Attribute/InputText"
 import Selector from "../Attribute/Selector"
-import Dropdown from "../Attribute/DropDown"
 import OptionList from "components/Option/OptionList";
 import NumberLine from "./NumberLine";
 import Button from "components/CustomButton/CustomButton.jsx";
@@ -263,23 +262,15 @@ class Question extends Component {
                   null : 
                   <div>
                     {
-                      dropdownCheck('mode')?
-                        <Dropdown 
-                          title="Mode"
-                          input={questionObj.mode}
-                          field="mode"
-                          editor={this.editor}
-                          attributes={questionObj}
-                        />
-                        :
-                        <InputText 
-                          title="Mode"
-                          rows="2"
-                          input={questionObj.mode}
-                          field="mode"
-                          attributes={questionObj}
-                          editor={this.editor}
-                        />
+                      <InputText 
+                      title="Mode"
+                      rows="2"
+                      input={questionObj.mode}
+                      field="mode"
+                      attributes={questionObj}
+                      editor={this.editor}
+                    />
+                        
                     }
                   </div>
                   
