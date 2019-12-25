@@ -11,8 +11,12 @@ import { chaptersFetchData } from '../../store/chapters/actions';
     constructor(props) {
         super(props);
         this.state = {
-          selectedOption: "Select Standard" // default selected value
+          selectedOption: this.defaultStandard(props) // default selected value
         };
+      }
+      defaultStandard = (props) => {
+          const { standards } = props;
+          return (('selected' in standards)&&('name' in standards.selected))? "Standard "+standards.selected.name : "Loading Standard" ;
       }
     componentDidMount() {
       this.props.fetchData();

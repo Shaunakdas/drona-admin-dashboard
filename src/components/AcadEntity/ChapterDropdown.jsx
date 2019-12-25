@@ -11,9 +11,13 @@ import { gamesFetchData } from '../../store/games/actions';
     constructor(props) {
         super(props);
         this.state = {
-          selectedOption: "Select Chapter" // default selected value
+          selectedOption: this.defaultChapter(props)
         };
       }
+    defaultChapter = (props) => {
+        const { chapters } = props;
+        return ('selected' in chapters)? chapters.selected.name : "Select Chapter" ;
+    }
     handleSelect(eventKey, event) {
         let selectedChapter = this.props.chapters.chapters[eventKey];
         this.setState({ selectedOption: selectedChapter.name });
