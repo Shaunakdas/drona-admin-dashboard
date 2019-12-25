@@ -74,12 +74,6 @@ class Question extends Component {
   render() {
     const {questionObj, openForCreating, openForEditing} = this.props;
     const selectorCheck = (openForEditing && (typeof questionObj.answer === "boolean"))||(openForCreating && (questionObj.answer === "bool"))
-    let dropdownCheck = field => {
-      if(openForEditing && `_${field}` in questionObj && (/mode|type/.test(field))){
-        return true;
-      }
-      return openForCreating && questionObj[field] === "dropdown";
-    }
     return (
         <Card
           title="Question"

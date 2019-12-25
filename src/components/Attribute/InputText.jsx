@@ -51,21 +51,21 @@ class InputText extends Component {
   }
 
   inputType = (props) => {
-    const { openForCreating, openForEditing, attributes, field} = props;
-    if (this.dropdownCheck(openForCreating, openForEditing, attributes, field)){
-      return "dropdown";
+    const { attributes,field } = props;
+    if(`_${field}` in attributes){
+      const itemList = attributes[`_${field}`].split(',');
+      if(itemList.length > 0){
+        const [inputType, ...list] = itemList;
+        return inputType;
+      }
     }
     return "input";
-  }
-  dropdownCheck = (openForCreating, openForEditing, attributes, field) => {
-    if(openForEditing && `_${field}` in attributes && (/mode|type/.test(field))){
-      return true;
-    }
-    return openForCreating && attributes[field] === "dropdown";
   }
   initialValue = (props) => {
     switch(this.inputType(props)) {
       case("dropdown"):
+        return props.openForCreating? this.optionList()[0] : (props.input||'')
+      case("sequence"):
         return props.openForCreating? this.optionList()[0] : (props.input||'')
       case("input"):
         return props.openForCreating? '': (props.input||'')
@@ -78,13 +78,22 @@ class InputText extends Component {
 
   optionList = () => {
     const { attributes,field } = this.props;
-    return attributes[`_${field}`].split(',');
+    if(`_${field}` in attributes){
+      const itemList = attributes[`_${field}`].split(',');
+      if(itemList.length > 0){
+        const [inputType, ...list] = itemList;
+        return list;
+      }
+    }
+    return [];
   }
 
   coreComponent(){
     const { openForEditing } = this.props;
     switch(this.inputType(this.props)) {
       case("dropdown"):
+        return openForEditing? this.editDropdownComponent() : this.createDropdownComponent()
+      case("sequence"):
         return openForEditing? this.editDropdownComponent() : this.createDropdownComponent()
       case("input"):
         return openForEditing? this.editInputComponent() : this.createInputComponent()
