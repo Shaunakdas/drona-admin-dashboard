@@ -27,6 +27,7 @@ import {
 } from "react-bootstrap";
 
 import QuestionEditor from "./Games/QuestionEditor.jsx";
+import SelectedEntityList from "components/AcadEntity/SelectedEntityList";
 
 
 import avatar from "assets/img/agility-tuts.png";
@@ -52,53 +53,30 @@ class UpdateGame extends Component {
       <div className="content">
         <Grid fluid>
           <Row>
-          <Col md={6}>
+            <Col md={6}>
+              <SelectedEntityList />
+            </Col>
+            {/* <Col md={6}>
               <div className="card card-user">
                 <p className="description text-center">
-                    <h5 className="title">
-                      <i className="pe-7s-culture" />
-                      Standard_1
-                    </h5>
-                  </p>
-                  <p className="description text-center">
-                    <h5 className="title">
-                      <i className="pe-7s-bookmarks" />
-                      Chapter_1</h5>
-                  </p>
-                  <p className="description text-center">
-                    <h5 className="title">
-                      <i className="pe-7s-joy" />
-                      Game_1
-                    </h5>
-                  </p>
-                  <p className="description text-center">
-                    <h5 className="title">
-                      <i className="pe-7s-copy-file" />
-                      40</h5>
-                  </p>
-                </div>
-              </Col>
-              <Col md={6}>
-              <div className="card card-user">
+                  <h5 className="title">
+                    <i className="pe-7s-news-paper" />
+                    Selected Tab
+                  </h5>
+                </p>
                 <p className="description text-center">
-                    <h5 className="title">
-                      <i className="pe-7s-news-paper" />
-                      Selected Tab
-                    </h5>
-                  </p>
-                  <p className="description text-center">
-                    <h5 className="title">
-                      <i className="pe-7s-musiclist" />
-                      Game Type</h5>
-                  </p>
-                  <p className="description text-center">
-                    <h5 className="title">
-                      <i className="pe-7s-browser" />
-                      Question Type
-                    </h5>
-                  </p>
-                </div>
-              </Col>
+                  <h5 className="title">
+                    <i className="pe-7s-musiclist" />
+                    Game Type</h5>
+                </p>
+                <p className="description text-center">
+                  <h5 className="title">
+                    <i className="pe-7s-browser" />
+                    Question Type
+                  </h5>
+                </p>
+              </div>
+            </Col> */}
 
           </Row>
           <Row >
@@ -108,10 +86,7 @@ class UpdateGame extends Component {
           </Row>
           <Row>
           {/* {gameComponent} */}
-          
           <QuestionEditor question={this.questionSelected()}/>
-          
-          
           </Row>
           </Grid>
         </div>

@@ -23,7 +23,6 @@ import {
   Grid,
   Row,
   Col,
-  FormGroup,
   ControlLabel,
 } from "react-bootstrap";
 
@@ -32,6 +31,7 @@ import  StandardDropdown  from "components/AcadEntity/StandardDropdown";
 import  ChapterDropdown  from "components/AcadEntity/ChapterDropdown";
 import  GameTable  from "components/AcadEntity/GameTable";
 import QuestionTable from "components/AcadEntity/QuestionTable";
+import SelectedEntityList from "components/AcadEntity/SelectedEntityList";
 
 import Button from "components/CustomButton/CustomButton.jsx";
 import { questionCreating } from '../store/questions/actions';
@@ -82,20 +82,7 @@ class GameList extends Component {
             </Col>
             <Col md={6}>
             <Row>
-            <div className="card card-user">
-              <div className="content">
-                <p className="description text-center">
-                  Selected Standard: Standard_1
-                </p>
-                <p className="description text-center">
-                  Selected Chapter: Chapter_1
-                </p>
-                <p className="description text-center">
-                  Selected Game: Game_1
-                </p>
-                <p className="description text-center">
-                  Question Count: 40
-                </p>
+            <SelectedEntityList />
                 <div className="description text-center">
                 {
                   ("questionStructure" in this.props.games)?
@@ -106,12 +93,7 @@ class GameList extends Component {
                     </NavLink>)
                   : null
                 }
-                
                 </div>
-                
-                
-              </div>
-            </div>
             </Row>
             <Row>
             <div className="card card-user">

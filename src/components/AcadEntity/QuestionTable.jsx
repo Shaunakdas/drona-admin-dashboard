@@ -13,11 +13,15 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
         this.props.questionSelected(questionId);
     }
     render() {
-        if (this.props.questions.hasErrored) {
+        const {questions, games} = this.props;
+        if (questions.hasErrored) {
             return <p>Sorry! There was an error loading the questions</p>;
         }
-        if (this.props.questions.isLoading) {
+        if (questions.isLoading) {
             return <p>Loading ...</p>;
+        }
+        if(!('selected' in games)){
+            return null;
         }
         return (
             <Table striped hover>
@@ -58,7 +62,8 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
 }
 const mapStateToProps = (state) => {
   return {
-      questions: state.questions
+      questions: state.questions,
+      games: state.games
   };
 };
 const mapDispatchToProps = (dispatch) => {

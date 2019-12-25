@@ -15,11 +15,15 @@ import {
         this.props.gameSelected(selectedGame);
     }
     render() {
-        if (this.props.games.hasErrored) {
+        const {games, chapters} = this.props;
+        if (games.hasErrored) {
             return <p>Sorry! There was an error loading the games</p>;
         }
-        if (this.props.games.isLoading) {
+        if (games.isLoading) {
             return <p>Loading ...</p>;
+        }
+        if(!('selected' in chapters)){
+            return null;
         }
         return (
             <Table striped hover>
@@ -55,7 +59,8 @@ import {
 }
 const mapStateToProps = (state) => {
   return {
-      games: state.games
+      games: state.games,
+      chapters: state.chapters
   };
 };
 const mapDispatchToProps = (dispatch) => {
