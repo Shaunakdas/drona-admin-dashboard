@@ -81,6 +81,7 @@ class OptionList extends Component {
           this.state.options.map((option, optionIndex) => {
             return (
               <Option
+                key={optionIndex}
                 option={option}
                 optionIndex={optionIndex}
                 updateOptionList={this.updateOptionList} />

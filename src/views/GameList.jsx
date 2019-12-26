@@ -61,12 +61,12 @@ class GameList extends Component {
                   <form>
                   <Row>
                     <Col md={9}>
-                    <ControlLabel>Standard: </ControlLabel> <StandardDropdown />
+                    <ControlLabel>Standard: </ControlLabel> <StandardDropdown id={1}/>
                     </Col>
                   </Row>
                   <Row>
                     <Col md={9}>
-                    <ControlLabel>Chapter: </ControlLabel><ChapterDropdown />
+                    <ControlLabel>Chapter: </ControlLabel><ChapterDropdown id={2}/>
                     </Col>
                   </Row>
 

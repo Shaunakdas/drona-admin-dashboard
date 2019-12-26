@@ -36,7 +36,7 @@ class Option extends Component {
       <Card
         title="Option"
         content={
-          <form>
+          <div>
             {
             (this.props.questions.isOptionUpdatePending)? 
               <div>
@@ -226,7 +226,7 @@ class Option extends Component {
                 />
             }
             <div className="clearfix" />
-          </form>
+          </div>
         }
       />
     );

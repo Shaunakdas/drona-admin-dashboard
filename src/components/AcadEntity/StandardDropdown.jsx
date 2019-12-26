@@ -32,10 +32,13 @@ import { chaptersFetchData } from '../../store/chapters/actions';
             return <p>Sorry! There was an error loading the standards</p>;
         }
         if (this.props.standards.isLoading) {
-            return <DropdownButton title="Loading…" />;
+            return <DropdownButton id={this.props.id} title="Loading…" />;
         }
         return (
-            <DropdownButton title={this.state.selectedOption} onSelect={this.handleSelect.bind(this)}>
+            <DropdownButton 
+                id={this.props.id}
+                title={this.state.selectedOption}
+                onSelect={this.handleSelect.bind(this)}>
                 {("standards" in this.props.standards)?
                   this.props.standards.standards.map((standard, i) => (
                       

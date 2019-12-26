@@ -40,7 +40,7 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
                         <td key={`${question.id}-${i}${i}`}>{'-'}</td>
                         <td key={question.question}>{question.question}</td>
                         <td key={"key"}>
-                            <DropdownButton title="Edit">
+                            <DropdownButton id={3} title="Edit">
                                 <MenuItem eventKey={2.1} onClick={() => this.questionSelection(question.id)}>
                                     <NavLink to="game/edit">
                                         Open

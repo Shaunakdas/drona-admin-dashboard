@@ -29,7 +29,7 @@ class CustomCheckbox extends Component {
     this.setState({ is_checked: !this.state.is_checked });
   }
   render() {
-    const { isChecked, number, label, inline, ...rest } = this.props;
+    const { isChecked, number, label, inline, toggleChange, ...rest } = this.props;
     const classes =
       inline !== undefined ? "checkbox checkbox-inline" : "checkbox";
     return (

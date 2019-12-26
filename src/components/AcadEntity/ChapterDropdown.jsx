@@ -29,10 +29,13 @@ import { gamesFetchData } from '../../store/games/actions';
             return <p>Sorry! There was an error loading the chapters</p>;
         }
         if (this.props.chapters.isLoading) {
-            return <DropdownButton title="Loading…" />;
+            return <DropdownButton id={this.props.id} title="Loading…" />;
         }
         return (
-            <DropdownButton title={this.state.selectedOption} onSelect={this.handleSelect.bind(this)}>
+            <DropdownButton
+                id={this.props.id}
+                title={this.state.selectedOption}
+                onSelect={this.handleSelect.bind(this)}>
                 {("chapters" in this.props.chapters)?
                   this.props.chapters.chapters.map((chapter, i) => (
                       

@@ -21,31 +21,18 @@ import {
 } from "react-bootstrap";
 
 import Question from "components/Question/Question";
-import AgilityJson from "./agility_structure.json";
+import QuestionList from "components/Question/QuestionList";
 
 class QuestionEditor extends Component {
   
   render() {
-    let questionObj = AgilityJson.game_holder_detail.question_input.sections[0];
-    if(!(this.props.question === undefined)){
-      questionObj = this.props.question;
-    }
-    
+    let {question} = this.props;
     return (
       <Col md={9}>
-        <Question questionObj={questionObj} />
-        {/* Title */}
         {
-          !("blocks" in questionObj)?
-            null :
-            <div>
-              {
-                questionObj.blocks.map((block) => {
-                  return (
-                    <Question questionObj={block}/>);
-                })
-              }
-            </div>
+          question.is_parent_question?
+            <QuestionList questionObj={question} /> :
+            <Question questionObj={question} />
         }  
       </Col>
     );
