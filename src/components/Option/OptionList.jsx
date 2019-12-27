@@ -75,6 +75,7 @@ class OptionList extends Component {
   }
 
   render() {
+    const {questionObj} = this.props;
     return (
       <div>
         {
@@ -84,7 +85,8 @@ class OptionList extends Component {
                 key={optionIndex}
                 option={option}
                 optionIndex={optionIndex}
-                updateOptionList={this.updateOptionList} />
+                updateOptionList={this.updateOptionList}
+                questionObj={questionObj} />
             )
           })
         }

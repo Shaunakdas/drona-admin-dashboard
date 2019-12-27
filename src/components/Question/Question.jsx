@@ -292,7 +292,11 @@ class Question extends Component {
                             {
                               (block.faces === undefined)?
                                 null : 
-                                <OptionList title="Faces" options={block.faces}/>
+                                <OptionList
+                                  title="Faces"
+                                  options={block.faces}
+                                  questionObj={questionObj}
+                                />
                             }
                             
                             
@@ -315,7 +319,8 @@ class Question extends Component {
                   null : 
                   <OptionList
                     options={questionObj.options}
-                    editor={this.optionListEditor}/>
+                    editor={this.optionListEditor}
+                    questionObj={questionObj}/>
               }
               <div className="clearfix" />
               {

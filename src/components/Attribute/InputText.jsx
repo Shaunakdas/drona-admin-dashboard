@@ -140,7 +140,8 @@ class InputText extends Component {
         }}
         onBlur={event=>{
           this.setState({edit:false})
-          const {id, entity_type} = this.props.attributes;
+          const { attributes} = this.props;
+          const {id, entity_type, questionObj} = attributes;
           const updateParams = {
             id,
             entity_type,
@@ -149,7 +150,10 @@ class InputText extends Component {
           if(entity_type === "game_question"){
             this.props.questionUpdateCalled(updateParams);
           }else{
-            this.props.optionUpdateCalled(updateParams);
+            this.props.optionUpdateCalled({
+              ...updateParams,
+              questionObj
+            });
           }
         }}
         onKeyUp={event=>{
@@ -229,7 +233,6 @@ class InputText extends Component {
   }
   
   render() {
-    // const { inputType } = this.props;
     const btn ={backgroundColor: '#10bcf1'};
     const finalValue = (value) => {
       return this.inputType(this.props) === "input" ? convertToKatex(value) : value;

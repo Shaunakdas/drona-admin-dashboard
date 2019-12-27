@@ -32,6 +32,7 @@ export function questions(state = initialState, action) {
         const blocks = selectedQuestion.blocks.map(
             block => block.id === action.question.id ? action.question : block
         )
+        // Now creating the whole state with blocks variable
         const actionQuestion = {
             ...selectedQuestion,
             blocks
@@ -61,6 +62,30 @@ export function questions(state = initialState, action) {
                     } : question
             )
             };
+    
+    case 'CHILD_OPTION_UPDATE_SUCCESS':
+        const selectedParentQuestion = state.questions.find(x => x.id === state.selectedId)
+        const parentBlocks = selectedParentQuestion.blocks.map(
+            block => block.id === action.option.questionObj.id ? 
+            {
+                ...block,
+                options: block.options.map(
+                    option => option.id === action.option.id ? action.option : option
+                )
+            } : block
+        )
+        // Now creating the whole state with blocks variable
+        const actionParentQuestion = {
+            ...selectedParentQuestion,
+            blocks: parentBlocks
+        }
+        return { 
+            ...state,
+            isOptionUpdatePending: false, 
+            questions: state.questions.map(
+                question => question.id === state.selectedId ? actionParentQuestion : question
+            )
+        };
     case 'OPTION_UPDATE_HAS_ERRORED': 
         return { ...state, isOptionUpdatePending: false, errorMessage: 'action.payload.message' };
         

@@ -31,14 +31,15 @@ class Option extends Component {
     this.props.updateOptionList(this.props.optionIndex, field,value)
   }
   render() {
-    let optionObj = this.props.option;
+    const { option, questionObj, questions} = this.props;
+    let optionObj = { ...option, questionObj};
     return (
       <Card
         title="Option"
         content={
           <div>
             {
-            (this.props.questions.isOptionUpdatePending)? 
+            (questions.isOptionUpdatePending)? 
               <div>
                 <i className="pe-7s-lock" />
                 <p> Updating... </p>

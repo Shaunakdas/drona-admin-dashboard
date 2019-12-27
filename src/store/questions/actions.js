@@ -153,7 +153,15 @@ export function optionUpdateSuccess(option) {
       option
   };
 }
-export function optionUpdateCalled(option) {
+export function childOptionUpdateSuccess(option) {
+  return {
+      type: 'CHILD_OPTION_UPDATE_SUCCESS',
+      option
+  };
+}
+export function optionUpdateCalled(optionObj) {
+  console.log(optionObj)
+  const { questionObj, ...option} = optionObj
   return (dispatch) => {
       dispatch(optionUpdatePending(true));
       fetch(`${process.env.REACT_APP_DRONA_BACKEND}/api/v1/question/update`, {
@@ -174,7 +182,14 @@ export function optionUpdateCalled(option) {
               return response;
           })
           .then((response) => response.json())
-          .then((option) => dispatch(optionUpdateSuccess(option)))
+          .then((option) => {
+            if( !questionObj.is_parent_question){
+              dispatch(optionUpdateSuccess(option));
+            }else{
+              dispatch(childOptionUpdateSuccess(optionObj));
+            }
+            
+          })
           .catch(() => dispatch(optionUpdateHasErrored(true)));
   };
 }
