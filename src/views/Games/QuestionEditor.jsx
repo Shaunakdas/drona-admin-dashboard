@@ -19,24 +19,37 @@ import React, { Component } from "react";
 import {
   Col,
 } from "react-bootstrap";
+import { connect } from 'react-redux';
 
 import Question from "components/Question/Question";
 import QuestionList from "components/Question/QuestionList";
 
 class QuestionEditor extends Component {
-  
+  questionSelected(){
+    const {games, questions} = this.props;
+    if (questions.openForEditing){
+      return questions.questions.find(x => x.id === questions.selectedId);
+    }else{
+      return games.questionStructure;
+    }
+  }
   render() {
-    let {question} = this.props;
+    const question = this.questionSelected();
     return (
       <Col md={9}>
         {
-          question.is_parent_question?
-            <QuestionList questionObj={question} /> :
-            <Question questionObj={question} />
+          ((!(question === undefined)) && question.is_parent_question)?
+            <QuestionList questionObj={this.questionSelected()} /> :
+            <Question questionObj={this.questionSelected()} />
         }  
       </Col>
     );
   }
 }
-
-export default QuestionEditor;
+const mapStateToProps = (state) => {
+  return {
+      questions: state.questions,
+      games: state.games
+  };
+};
+export default connect(mapStateToProps, null) (QuestionEditor);

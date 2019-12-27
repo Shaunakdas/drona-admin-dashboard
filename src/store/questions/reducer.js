@@ -27,6 +27,22 @@ export function questions(state = initialState, action) {
                 question => question.id === state.selectedId ? action.question : question
             )
             };
+    case 'CHILD_QUESTION_UPDATE_SUCCESS':
+        const selectedQuestion = state.questions.find(x => x.id === state.selectedId)
+        const blocks = selectedQuestion.blocks.map(
+            block => block.id === action.question.id ? action.question : block
+        )
+        const actionQuestion = {
+            ...selectedQuestion,
+            blocks
+        }
+        return { 
+            ...state,
+            isQuestionUpdatePending: false, 
+            questions: state.questions.map(
+                question => question.id === state.selectedId ? actionQuestion : question
+            )
+            };
     case 'QUESTION_UPDATE_HAS_ERRORED': 
         return { ...state, isQuestionUpdatePending: false, errorMessage: 'action.payload.message' };
     case 'OPTION_UPDATE_PENDING': 

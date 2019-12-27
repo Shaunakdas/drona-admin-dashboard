@@ -70,6 +70,12 @@ export function questionUpdateSuccess(question) {
       question
   };
 }
+export function childQuestionUpdateSuccess(question) {
+  return {
+      type: 'CHILD_QUESTION_UPDATE_SUCCESS',
+      question
+  };
+}
 export function questionUpdateCalled(question) {
   return (dispatch) => {
       dispatch(questionUpdatePending(true));
@@ -91,7 +97,13 @@ export function questionUpdateCalled(question) {
               return response;
           })
           .then((response) => response.json())
-          .then((question) => dispatch(questionUpdateSuccess(question)))
+          .then((question) => {
+            if(question.is_parent_question){
+              dispatch(questionUpdateSuccess(question))
+            }else{
+              dispatch(childQuestionUpdateSuccess(question))
+            }
+          })
           .catch(() => dispatch(questionUpdateHasErrored(true)));
   };
 }

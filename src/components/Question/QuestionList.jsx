@@ -20,16 +20,20 @@ import {
   Col,
 } from "react-bootstrap";
 
+import { connect } from 'react-redux';
+import Card from "components/Card/Card.jsx";
 import Question from "components/Question/Question";
 import Button from "components/CustomButton/CustomButton.jsx";
+import InputText from "../Attribute/InputText"
+import {  questionCreateCalled } from '../../store/questions/actions';
 
 class QuestionList extends Component {
   constructor(props){
     super(props)
     this.state = {
       questionStructure: props.questionObj.blocks[0],
-      questions: props.questionObj.blocks,
-      finalQuestions: props.questionObj.blocks
+      questionObj: props.questionObj,
+      finalQuestionObj: props.questionObj
     }
     this.updateQuestionList = this.updateQuestionList.bind(this);
   }
@@ -37,12 +41,24 @@ class QuestionList extends Component {
   // Button for adding an question
   addButton(){
     this.setState(state => {
-      const questions = [...state.questions, state.questionStructure];
+      const blocks = [...state.finalQuestionObj.blocks, state.questionStructure];
+      let finalQuestion = {
+        ...state.finalQuestionObj,
+        blocks
+      }
       return {
         ...state,
-        questions,
+        finalQuestionObj: finalQuestion,
       };
     });
+  }
+  editor(field, value){
+    this.setState(prevState => ({
+      finalObj: {                   // object that we want to update
+          ...prevState.finalObj,    // keep all other key-value pairs
+          [field]: value       // update the value of specific key
+      }
+  }))
   }
 
   // Function to update finalQuestion List in state, which wil be used to question question list
@@ -59,14 +75,31 @@ class QuestionList extends Component {
         finalQuestions,
       };
     });
-    console.log(this.state);
     // this.props.editor( finalQuestions);
   }
   render() {
-    const {questionObj} = this.props;
+    const {questionObj, openForCreating, openForEditing,questions} = this.props;
     return (
-      <Col md={9}>
+      <Card
+          title="Parent Question"
+          content={
         <div>
+          {
+            (questions.isQuestionUpdatePending)? 
+            <div>
+              <i className="pe-7s-lock" />
+              <p> Updating... </p>
+            </div> : null
+          }
+          {/* Display */}
+          <InputText 
+            title="Display"
+            input={questionObj.question}
+            rows="5"
+            field="question"
+            attributes={questionObj}
+            editor={this.editor}
+          />
           {
             questionObj.blocks.map((block, key) => {
               return (
@@ -79,9 +112,22 @@ class QuestionList extends Component {
             Add Question
           </Button>
         </div>
-      </Col>
+          } />
     );
   }
 }
 
-export default QuestionList;
+const mapStateToProps = (state) => {
+  return {
+      questions: state.questions,
+      games: state.games,
+      openForCreating: state.questions.openForCreating,
+      openForEditing: state.questions.openForEditing
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    questionCreateCalled : (question, gameId) => dispatch(questionCreateCalled(question, gameId))
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps) (QuestionList);

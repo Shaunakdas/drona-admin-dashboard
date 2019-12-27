@@ -73,6 +73,9 @@ class Question extends Component {
   }
   render() {
     const {questionObj, openForCreating, openForEditing} = this.props;
+    if(questionObj === undefined){
+      return <div>{"question pending"}</div>
+    }
     const selectorCheck = (openForEditing && (typeof questionObj.answer === "boolean"))||(openForCreating && (questionObj.answer === "bool"))
     return (
         <Card
@@ -315,9 +318,14 @@ class Question extends Component {
                     editor={this.optionListEditor}/>
               }
               <div className="clearfix" />
-              <Button bsStyle="info" pullRight fill onClick={this.createQuestion.bind(this)}>
-                Upload Question
-              </Button>
+              {
+                questionObj.is_parent_question?
+                <Button bsStyle="info" pullRight fill onClick={this.createQuestion.bind(this)}>
+                  Upload Question
+                </Button>
+                : null
+              }
+              
             </form>
           }
         />
