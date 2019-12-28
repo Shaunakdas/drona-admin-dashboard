@@ -47,50 +47,33 @@ class UpdateGame extends Component {
     }
   }
   render() {  
-    return (this.props.cookies.get('AuthToken') === undefined)? (
+    const {cookies, questions} = this.props;
+    return (cookies.get('AuthToken') === undefined)? (
       <Redirect to="/auth/login-page" />
           ) :  (
-      <div className="content">
-        <Grid fluid>
-          <Row>
-            <Col md={6}>
-              <SelectedEntityList />
-            </Col>
-            {/* <Col md={6}>
-              <div className="card card-user">
-                <p className="description text-center">
-                  <h5 className="title">
-                    <i className="pe-7s-news-paper" />
-                    Selected Tab
-                  </h5>
-                </p>
-                <p className="description text-center">
-                  <h5 className="title">
-                    <i className="pe-7s-musiclist" />
-                    Game Type</h5>
-                </p>
-                <p className="description text-center">
-                  <h5 className="title">
-                    <i className="pe-7s-browser" />
-                    Question Type
-                  </h5>
-                </p>
+            (questions.questions.length == 0)? (
+              <Redirect to="/game/edit" />
+            ) : (
+              <div className="content">
+                <Grid fluid>
+                  <Row>
+                    <Col md={6}>
+                      <SelectedEntityList />
+                    </Col>
+                  </Row>
+                  <Row >
+                    <Col md={12}>
+                      <Image src={avatar} thumbnail />
+                    </Col>
+                  </Row>
+                  <Row>
+                    {/* {gameComponent} */}
+                    <QuestionEditor question={this.questionSelected()}/>
+                  </Row>
+                </Grid>
               </div>
-            </Col> */}
-
-          </Row>
-          <Row >
-          <Col md={12}>
-          <Image src={avatar} thumbnail />
-          </Col>
-          </Row>
-          <Row>
-          {/* {gameComponent} */}
-          <QuestionEditor question={this.questionSelected()}/>
-          </Row>
-          </Grid>
-        </div>
-    );
+            )
+          );
   }
 }
 
