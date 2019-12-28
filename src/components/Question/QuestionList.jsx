@@ -35,9 +35,15 @@ class QuestionList extends Component {
       questionObj: props.questionObj,
       finalQuestionObj: props.questionObj
     }
+    this.editor = this.editor.bind(this);
     this.updateQuestionList = this.updateQuestionList.bind(this);
   }
 
+  createQuestion(){
+    this.props.questionCreateCalled(
+      this.state.finalQuestionObj,
+      this.props.games.selected.id);
+  }
   // Button for adding an question
   addButton(){
     this.setState(state => {
@@ -54,8 +60,8 @@ class QuestionList extends Component {
   }
   editor(field, value){
     this.setState(prevState => ({
-      finalObj: {                   // object that we want to update
-          ...prevState.finalObj,    // keep all other key-value pairs
+      finalQuestionObj: {                   // object that we want to update
+          ...prevState.finalQuestionObj,    // keep all other key-value pairs
           [field]: value       // update the value of specific key
       }
   }))
@@ -63,16 +69,21 @@ class QuestionList extends Component {
 
   // Function to update finalQuestion List in state, which wil be used to question question list
   updateQuestionList(questionIndex, field, value){
-    let finalQuestions = [...this.state.finalQuestions];
-    let question = {
-      ...finalQuestions[questionIndex],
+    console.log({questionIndex, field, value})
+    const newBlock = {
+      ...this.state.finalQuestionObj.blocks[questionIndex],
       [field]: value
     }
-    finalQuestions[questionIndex]= question;
+    const finalQuestionObj = { 
+      ...this.state.finalQuestionObj, 
+      blocks: this.state.finalQuestionObj.blocks.map(
+          (block, i) => i === questionIndex ? newBlock : block
+      )
+    }
     this.setState(state => {
       return {
         ...state,
-        finalQuestions,
+        finalQuestionObj,
       };
     });
     // this.props.editor( finalQuestions);
@@ -103,7 +114,11 @@ class QuestionList extends Component {
           {
             questionObj.blocks.map((block, key) => {
               return (
-                <Question key={key} questionObj={block}/>);
+                <Question
+                  key={key}
+                  questionObj={block}
+                  questionIndex={key}
+                  updateQuestionList={this.updateQuestionList}/>);
             })
           }
           <Button
@@ -111,6 +126,13 @@ class QuestionList extends Component {
             onClick={() => this.addButton()} >
             Add Question
           </Button>
+          {
+            openForCreating?
+            <Button bsStyle="info" pullRight fill onClick={this.createQuestion.bind(this)}>
+              Upload Question
+            </Button>
+            : null
+          }
         </div>
           } />
     );

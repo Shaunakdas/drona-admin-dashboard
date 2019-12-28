@@ -37,21 +37,31 @@ class Question extends Component {
     this.editor = this.editor.bind(this);
     this.optionListEditor = this.optionListEditor.bind(this);
   }
+  //For current question attributes
   editor(field, value){
+    const {questionIndex, updateQuestionList} = this.props;
     this.setState(prevState => ({
       finalObj: {                   // object that we want to update
           ...prevState.finalObj,    // keep all other key-value pairs
           [field]: value       // update the value of specific key
       }
-  }))
+    }))
+    if (!(updateQuestionList === undefined)){
+      updateQuestionList(questionIndex, field, value);
+    }
   }
+  // For options array edits
   optionListEditor(options){
+    const {questionIndex, updateQuestionList} = this.props;
     this.setState(prevState => ({
       finalObj: {                   // object that we want to update
           ...prevState.finalObj,    // keep all other key-value pairs
           options: options       // update the value of specific key
         }
     }))
+    if (!(updateQuestionList === undefined)){
+      updateQuestionList(questionIndex, 'options', options);
+    }
   }
   //Backup function
   updateValues(questionObj){
@@ -324,7 +334,7 @@ class Question extends Component {
               }
               <div className="clearfix" />
               {
-                questionObj.is_parent_question?
+                !questionObj._has_parent_question?
                 <Button bsStyle="info" pullRight fill onClick={this.createQuestion.bind(this)}>
                   Upload Question
                 </Button>

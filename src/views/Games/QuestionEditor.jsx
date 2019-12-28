@@ -38,7 +38,7 @@ class QuestionEditor extends Component {
     return (
       <Col md={9}>
         {
-          ((!(question === undefined)) && question.is_parent_question)?
+          ((!(question === undefined)) && ("blocks" in question))?
             <QuestionList questionObj={this.questionSelected()} /> :
             <Question questionObj={this.questionSelected()} />
         }  

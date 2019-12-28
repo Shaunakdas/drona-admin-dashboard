@@ -19,6 +19,16 @@ export function questions(state = initialState, action) {
         return { ...state, openForEditing: false, openForCreating: true, selectedId: action.questionId };
     case 'QUESTION_UPDATE_PENDING': 
         return { ...state, isQuestionUpdatePending: true };
+    case 'QUESTION_CREATE_SUCCESS':
+        return { 
+            ...state,
+            isQuestionUpdatePending: false,
+            questions: state.questions.concat(action.question),
+            selectedId: action.question.id,
+            openForEditing: true,
+            openForCreating: false
+            };
+    
     case 'QUESTION_UPDATE_SUCCESS':
         return { 
             ...state,
