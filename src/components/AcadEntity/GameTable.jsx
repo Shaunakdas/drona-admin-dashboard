@@ -14,7 +14,15 @@ import {
         this.props.gameFetchQuestionStructure(selectedGame.id);
         this.props.gameSelected(selectedGame);
     }
+    bgColor(gameId){
+        const {games} = this.props;
+        if(('selected' in games) && (gameId === games.selected.id)){
+            return {backgroundColor: '#e5f57f'};
+        }
+        return null;
+    }
     render() {
+        const btn ={backgroundColor: '#7ff5e3'};
         const {games, chapters} = this.props;
         if (games.hasErrored) {
             return <p>Sorry! There was an error loading the games</p>;
@@ -38,14 +46,14 @@ import {
                 <tbody>
                 {("games" in this.props.games)?
                   this.props.games.games.map((game, i) => (
-                    <tr key={game.id}>
+                    <tr key={game.id} style={this.bgColor(game.id)}>
                         <td key={game.sequence}>{game.sequence}</td>
                         <td key={game.title}>{game.title}</td>
                         <td key={game.game.name}>{game.game.name}</td>
                         <td key={game.id}>{game.id}</td>
                         <td key={"key"}>
-                            <Button bsStyle="info" onClick={() => this.gameSelection(i)}>
-                                <i className="pe-7s-more" />
+                            <Button style={btn} onClick={() => this.gameSelection(i)}>
+                                <i className="fa fa-hand-paper-o" /> Select
                             </Button>
                         </td>
                     </tr>
