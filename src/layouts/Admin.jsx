@@ -191,7 +191,7 @@ class Dashboard extends Component {
           />
           <Switch>{this.getRoutes(routes)}</Switch>
           <Footer fluid />
-          <FixedPlugin
+          {/* <FixedPlugin
             handleImageClick={this.handleImageClick}
             handleColorClick={this.handleColorClick}
             handleHasImage={this.handleHasImage}
@@ -202,7 +202,7 @@ class Dashboard extends Component {
             mini={this.state["mini"]}
             handleFixedClick={this.handleFixedClick}
             fixedClasses={this.state.fixedClasses}
-          />
+          /> */}
         </div>
       </div>
     );
