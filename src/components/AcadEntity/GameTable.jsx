@@ -53,7 +53,7 @@ import {
                         <td key={game.id}>{game.id}</td>
                         <td key={"key"}>
                             <Button style={btn} onClick={() => this.gameSelection(i)}>
-                                <i className="fa fa-hand-paper-o" /> Select
+                                <i className="fa fa-hand-paper-o" />
                             </Button>
                         </td>
                     </tr>

@@ -1,18 +1,52 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
+import ReactTable from "react-table";
 import {
     DropdownButton,
     Table,
     MenuItem
   } from "react-bootstrap";
+
+import Button from "components/CustomButton/CustomButton.jsx";
 import { questionsFetchData,questionSelected } from '../../store/questions/actions';
 
  class QuestionTable extends Component {
     questionSelection(questionId){
         this.props.questionSelected(questionId);
+        this.props.history.push('game/edit')
+    }
+    getColumns = () =>{
+        return this.props.questions.questions.map((question,i) => {
+            return {
+              seq: i,
+              id: question.id,
+              display: question.question,
+              hint: question.hint,
+              actions: (
+                // we've added some custom button actions
+                <div className="actions-right">
+                  {/* use this button to add a edit kind of action */}
+                  <Button
+                    onClick={() => {this.questionSelection(question.id)}}
+                    bsStyle="warning"
+                    simple
+                    icon
+                  >
+                    <i className="fa fa-edit" />
+                  </Button>{" "}
+                </div>
+              )
+            };
+          })
     }
     render() {
+        const columns = [
+            {Header: 'Id', accessor: 'id'},
+            {Header: 'Title', accessor: 'display'},
+            {Header: 'Actions', accessor: 'actions'},
+            {Header: 'Type', accessor: 'hint'},
+        ]
         const {questions, games} = this.props;
         if (questions.hasErrored) {
             return <p>Sorry! There was an error loading the questions</p>;
@@ -24,39 +58,16 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
             return null;
         }
         return (
-            <Table striped hover>
-                <thead>
-                <tr>
-                    <th key={'Id'}>{'Id'}</th>
-                    <th key={'Seq.'}>{'Seq.'}</th>
-                    <th key={'Title'}>{'Title'}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {("questions" in this.props.questions)?
-                  this.props.questions.questions.map((question, i) => (
-                    <tr key={`${question.id}-${i}`}>
-                        <td key={question.id}>{question.id}</td>
-                        <td key={`${question.id}-${i}${i}`}>{'-'}</td>
-                        <td key={question.question}>{question.question}</td>
-                        <td key={"key"}>
-                            <DropdownButton id={3} title="Edit">
-                                <MenuItem eventKey={2.1} onClick={() => this.questionSelection(question.id)}>
-                                    <NavLink to="game/edit">
-                                        Open
-                                    </NavLink>
-                                </MenuItem>
-                                <MenuItem eventKey={2.1}>Move</MenuItem>
-                                <MenuItem divider />
-                                <MenuItem eventKey={2.1}>Delete</MenuItem>
-                            </DropdownButton>
-                        </td>
-                    </tr>
-                    )) : null
-                }
-                
-                </tbody>
-            </Table>
+            <div>
+                <ReactTable
+                    data={this.getColumns()}
+                    columns={columns}
+                    defaultPageSize={10}
+                    showPaginationTop
+                    showPaginationBottom={false}
+                    className="-striped -highlight"
+                />
+            </div>
         );
     }
 }
@@ -72,4 +83,4 @@ const mapDispatchToProps = (dispatch) => {
       questionSelected: (questionId) => dispatch(questionSelected(questionId)), 
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionTable);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(QuestionTable));
