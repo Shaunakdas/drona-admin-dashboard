@@ -19,6 +19,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { withCookies } from 'react-cookie';
 import { Redirect } from "react-router-dom";
+import ImageZoom from 'react-medium-image-zoom'
 import {
   Grid,
   Row,
@@ -60,10 +61,19 @@ class UpdateGame extends Component {
                     <Col md={6}>
                       <SelectedEntityList />
                     </Col>
-                  </Row>
-                  <Row >
-                    <Col md={12}>
-                      <Image src={avatar} thumbnail />
+                    <Col md={6}>
+                      <ImageZoom
+                        image={{
+                          src: avatar,
+                          alt: 'Golden Gate Bridge',
+                          className: 'img',
+                          style: { width: '30em' }
+                        }}
+                        zoomImage={{
+                          src: avatar,
+                          alt: 'Golden Gate Bridge'
+                        }}
+                      />
                     </Col>
                   </Row>
                   <Row>
