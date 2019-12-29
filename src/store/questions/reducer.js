@@ -12,7 +12,9 @@ export function questions(state = initialState, action) {
     case 'QUESTIONS_FETCH_DATA_SUCCESS':
         return { ...state, isLoading: false, questions: action.questions.game_holder_detail.question_input.sections };
     case 'QUESTIONS_HAS_ERRORED': 
-        return { ...state, isLoading: false, errorMessage: 'action.payload.message' };
+        return { ...state, isLoading: false, errorMessage: 'Error in Response' };
+    case 'QUESTIONS_HAS_ERRORED': 
+        return { ...state, errorMessage: '' };
     case 'QUESTION_SELECTED':
         return { ...state, openForEditing: true, openForCreating: false, selectedId: action.questionId };
     case 'QUESTION_CREATING':
@@ -55,7 +57,7 @@ export function questions(state = initialState, action) {
             )
             };
     case 'QUESTION_UPDATE_HAS_ERRORED': 
-        return { ...state, isQuestionUpdatePending: false, errorMessage: 'action.payload.message' };
+        return { ...state, isQuestionUpdatePending: false, errorMessage: 'Error in Response' };
     case 'OPTION_UPDATE_PENDING': 
         return { ...state, isOptionUpdatePending: true };
     case 'OPTION_UPDATE_SUCCESS':
@@ -97,8 +99,9 @@ export function questions(state = initialState, action) {
             )
         };
     case 'OPTION_UPDATE_HAS_ERRORED': 
-        return { ...state, isOptionUpdatePending: false, errorMessage: 'action.payload.message' };
-        
+        return { ...state, isOptionUpdatePending: false, errorMessage: 'Error in Response' };
+    case 'QUESTION_UPDATE_VALIDATION_ERRORED': 
+        return { ...state, errorMessage: action.error };    
     default:
         return state;
   }

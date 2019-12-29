@@ -20,11 +20,20 @@ import {
   Col,
 } from "react-bootstrap";
 import { connect } from 'react-redux';
+import SweetAlert from "react-bootstrap-sweetalert";
 
 import Question from "components/Question/Question";
 import QuestionList from "components/Question/QuestionList";
 
 class QuestionEditor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      alert: null,
+      show: false
+    };
+    this.hideAlert = this.hideAlert.bind(this);
+  }
   questionSelected(){
     const {games, questions} = this.props;
     if (questions.openForEditing){
@@ -33,6 +42,32 @@ class QuestionEditor extends Component {
       return games.questionStructure;
     }
   }
+  basicAlert(error) {
+    this.setState({
+      alert: (
+        <SweetAlert
+          style={{ display: "block", marginTop: "-100px" }}
+          title={'Error while updating'}
+          onConfirm={() => this.hideAlert()}
+          onCancel={() => this.hideAlert()}
+          confirmBtnBsStyle="info"
+        >
+          {error}
+        </SweetAlert>
+      )
+    });
+  }
+  hideAlert() {
+    this.setState({
+      alert: null
+    });
+  }
+  componentWillReceiveProps(nextProps) {
+    const questions = nextProps;
+    if('errorMessage' in questions.questions && questions.questions.errorMessage.length > 0){
+      this.basicAlert(questions.questions.errorMessage);
+    }
+   }
   render() {
     const question = this.questionSelected();
     return (
@@ -41,7 +76,8 @@ class QuestionEditor extends Component {
           ((!(question === undefined)) && ("blocks" in question))?
             <QuestionList questionObj={this.questionSelected()} /> :
             <Question questionObj={this.questionSelected()} />
-        }  
+        }
+        {this.state.alert}
       </Col>
     );
   }

@@ -76,6 +76,17 @@ export function childQuestionUpdateSuccess(question) {
       question
   };
 }
+export function questionUpdateValidationErrored(error) {
+  return {
+      type: 'QUESTION_UPDATE_VALIDATION_ERRORED',
+      error
+  };
+}
+export function questionUpdateErrorDismissed() {
+  return {
+      type: 'QUESTION_UPDATE_ERROR_DISMISSED'
+  };
+}
 export function questionUpdateCalled(question) {
   return (dispatch) => {
       dispatch(questionUpdatePending(true));
@@ -98,11 +109,16 @@ export function questionUpdateCalled(question) {
           })
           .then((response) => response.json())
           .then((question) => {
-            if(question._has_parent_question){
-              dispatch(childQuestionUpdateSuccess(question))
+            if('error' in question){
+              questionUpdateValidationErrored(question.error)
             }else{
-              dispatch(questionUpdateSuccess(question))
+              if(question._has_parent_question){
+                dispatch(childQuestionUpdateSuccess(question))
+              }else{
+                dispatch(questionUpdateSuccess(question))
+              }
             }
+            
           })
           .catch(() => dispatch(questionUpdateHasErrored(true)));
   };
@@ -154,7 +170,11 @@ export function questionCreateCalled(question, gameId) {
           })
           .then((response) => response.json())
           .then((question) => {
-            dispatch(questionCreateSuccess(question));
+            if('error' in question){
+              dispatch(questionUpdateValidationErrored(question.error))
+            }else{
+              dispatch(questionCreateSuccess(question));
+            }
           })
           .catch(() => dispatch(questionCreateHasErrored(true)));
   };
@@ -184,7 +204,6 @@ export function childOptionUpdateSuccess(option) {
   };
 }
 export function optionUpdateCalled(optionObj) {
-  console.log(optionObj)
   const { questionObj, ...option} = optionObj
   return (dispatch) => {
       dispatch(optionUpdatePending(true));
@@ -207,10 +226,14 @@ export function optionUpdateCalled(optionObj) {
           })
           .then((response) => response.json())
           .then((option) => {
-            if( questionObj._has_parent_question){
-              dispatch(childOptionUpdateSuccess(option));
+            if('error' in option){
+              dispatch(questionUpdateValidationErrored(option.error))
             }else{
-              dispatch(optionUpdateSuccess(optionObj));
+              if( questionObj._has_parent_question){
+                dispatch(childOptionUpdateSuccess(option));
+              }else{
+                dispatch(optionUpdateSuccess(optionObj));
+              }
             }
             
           })
