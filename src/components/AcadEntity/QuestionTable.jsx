@@ -40,6 +40,10 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
             };
           })
     }
+    filterMethod = (filter, row, column) => {
+        const id = filter.pivotId || filter.id
+        return row[id] !== undefined ? String(row[id].toLowerCase()).startsWith(filter.value.toLowerCase()) : true
+      }
     render() {
         const columns = [
             {Header: 'Id', accessor: 'id'},
@@ -60,6 +64,8 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
         return (
             <div>
                 <ReactTable
+                    defaultFilterMethod={this.filterMethod}
+                    filterable
                     data={this.getColumns()}
                     columns={columns}
                     defaultPageSize={10}

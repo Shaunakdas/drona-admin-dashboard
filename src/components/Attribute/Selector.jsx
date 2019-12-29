@@ -48,7 +48,7 @@ class Selector extends Component {
   }
   triggerUpdateAPI = (newCheckedStatus) => {
     const { field, attributes, questionUpdateCalled, optionUpdateCalled } = this.props;
-    const {id, entity_type} = attributes;
+    const {id, entity_type, questionObj} = attributes;
     const updateParams = {
       id,
       entity_type,
@@ -57,7 +57,10 @@ class Selector extends Component {
     if(entity_type === "game_question"){
       questionUpdateCalled(updateParams);
     }else{
-      optionUpdateCalled(updateParams);
+      optionUpdateCalled({
+        ...updateParams,
+        questionObj
+      });
     }
   }
   getId = () => {
