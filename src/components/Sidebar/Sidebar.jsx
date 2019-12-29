@@ -197,7 +197,7 @@ class Sidebar extends Component {
             className="simple-text logo-normal"
             target="_blank"
           >
-            Creative Tim
+            Drona Admin
           </a>
         </div>
         <div className="sidebar-wrapper" ref="sidebarWrapper">
