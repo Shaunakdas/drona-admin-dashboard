@@ -337,7 +337,7 @@ class Question extends Component {
               }
               <div className="clearfix" />
               {
-                !questionObj._has_parent_question?
+                (!questionObj._has_parent_question && openForCreating)?
                 <Button bsStyle="primary" pullRight fill onClick={this.createQuestion.bind(this)}>
                   Upload Question
                 </Button>
