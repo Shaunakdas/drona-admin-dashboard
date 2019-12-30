@@ -25,18 +25,38 @@ class OptionList extends Component {
     this.state = {
       optionStructure: props.options[0],
       options: props.options,
-      finalOptions: props.options
+      finalOptions: this.getDefaultFinalOptions(props)
     }
     this.updateOptionList = this.updateOptionList.bind(this);
+  }
+  getDefaultFinalOptions = (props) => {
+    return props.options.map( option => {
+      return this.copyDefaultKeys(option)
+    })
+  }
+  copyDefaultKeys = (option) => {
+    let finalOp = {};
+    for (let key in option){
+      if(option[key] == "bool"){
+        finalOp[key] = false;
+      } else if(option[key] == "dropdown"){
+        finalOp[key] = option[`_${key}`].split('')[1]
+      } else if(option[key] == "sequence"){
+        finalOp[key] = option[`_${key}`].split('')[1]
+      }
+    }
+    return finalOp;
   }
 
   // Button for adding an option
   addButton(){
     this.setState(state => {
       const options = [...state.options, state.optionStructure];
+      const finalOptions = [...state.finalOptions, this.copyDefaultKeys(state.optionStructure)];
       return {
         ...state,
         options,
+        finalOptions
       };
     });
   }
