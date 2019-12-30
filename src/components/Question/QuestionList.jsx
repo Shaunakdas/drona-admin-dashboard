@@ -33,12 +33,33 @@ class QuestionList extends Component {
     this.state = {
       questionStructure: props.questionObj.blocks[0],
       questionObj: props.questionObj,
-      finalQuestionObj: props.questionObj
+      finalQuestionObj: this.getDefaultFinalBlocks(props)
     }
     this.editor = this.editor.bind(this);
     this.updateQuestionList = this.updateQuestionList.bind(this);
   }
-
+  getDefaultFinalBlocks = (props) => {
+    const blocks = props.questionObj.blocks.map( block => {
+      return this.copyDefaultKeys(block)
+    })
+    return {
+      ...props.questionObj,
+      blocks
+    }
+  }
+  copyDefaultKeys = (question) => {
+    let finalOp = {};
+    for (let key in question){
+      if(question[key] === "bool"){
+        finalOp[key] = false;
+      } else if(question[key] === "dropdown"){
+        finalOp[key] = question[`_${key}`].split(',')[1]
+      } else if(question[key] === "sequence"){
+        finalOp[key] = question[`_${key}`].split(',')[1]
+      }
+    }
+    return finalOp;
+  }
   createQuestion(){
     this.props.questionCreateCalled(
       this.state.finalQuestionObj,
@@ -47,14 +68,20 @@ class QuestionList extends Component {
   // Button for adding an question
   addButton(){
     this.setState(state => {
-      const blocks = [...state.finalQuestionObj.blocks, state.questionStructure];
-      let finalQuestion = {
-        ...state.finalQuestionObj,
+      const blocks = [...state.questionObj.blocks, state.questionStructure];
+      const questionObj ={
+        ...state.questionObj,
         blocks
+      }
+      const finalBlocks = [...state.finalQuestionObj.blocks, this.copyDefaultKeys(state.questionStructure).blocks];
+      let finalQuestionObj = {
+        ...state.finalQuestionObj,
+        blocks: finalBlocks
       }
       return {
         ...state,
-        finalQuestionObj: finalQuestion,
+        questionObj,
+        finalQuestionObj,
       };
     });
   }
@@ -69,7 +96,6 @@ class QuestionList extends Component {
 
   // Function to update finalQuestion List in state, which wil be used to question question list
   updateQuestionList(questionIndex, field, value){
-    console.log({questionIndex, field, value})
     const newBlock = {
       ...this.state.finalQuestionObj.blocks[questionIndex],
       [field]: value
@@ -112,7 +138,7 @@ class QuestionList extends Component {
             editor={this.editor}
           />
           {
-            questionObj.blocks.map((block, key) => {
+            this.state.questionObj.blocks.map((block, key) => {
               return (
                 <Question
                   key={key}

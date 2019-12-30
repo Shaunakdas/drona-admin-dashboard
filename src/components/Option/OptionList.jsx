@@ -40,9 +40,9 @@ class OptionList extends Component {
       if(option[key] === "bool"){
         finalOp[key] = false;
       } else if(option[key] === "dropdown"){
-        finalOp[key] = option[`_${key}`].split('')[1]
+        finalOp[key] = option[`_${key}`].split(',')[1]
       } else if(option[key] === "sequence"){
-        finalOp[key] = option[`_${key}`].split('')[1]
+        finalOp[key] = option[`_${key}`].split(',')[1]
       }
     }
     return finalOp;

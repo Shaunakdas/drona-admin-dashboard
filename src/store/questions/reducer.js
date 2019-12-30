@@ -21,6 +21,8 @@ export function questions(state = initialState, action) {
         return { ...state, openForEditing: false, openForCreating: true, selectedId: action.questionId };
     case 'QUESTION_UPDATE_PENDING': 
         return { ...state, isQuestionUpdatePending: true, errorMessage: '' };
+    case 'QUESTION_CREATE_PENDING':
+        return { ...state, isQuestionUpdatePending: true, errorMessage: '' };
     case 'QUESTION_CREATE_SUCCESS':
         return { 
             ...state,

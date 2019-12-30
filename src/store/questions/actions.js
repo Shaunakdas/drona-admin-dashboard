@@ -108,14 +108,14 @@ export function questionUpdateCalled(question) {
               return response;
           })
           .then((response) => response.json())
-          .then((question) => {
-            if('error' in question){
-              questionUpdateValidationErrored(question.error)
+          .then((questionResp) => {
+            if('error' in questionResp){
+              questionUpdateValidationErrored(questionResp.error)
             }else{
-              if(question._has_parent_question){
-                dispatch(childQuestionUpdateSuccess(question))
+              if(questionResp._has_parent_question){
+                dispatch(childQuestionUpdateSuccess(questionResp))
               }else{
-                dispatch(questionUpdateSuccess(question))
+                dispatch(questionUpdateSuccess(questionResp))
               }
             }
             
@@ -169,11 +169,11 @@ export function questionCreateCalled(question, gameId) {
               return response;
           })
           .then((response) => response.json())
-          .then((question) => {
-            if('error' in question){
-              dispatch(questionUpdateValidationErrored(question.error))
+          .then((questionResp) => {
+            if('error' in questionResp){
+              dispatch(questionUpdateValidationErrored(questionResp.error))
             }else{
-              dispatch(questionCreateSuccess(question));
+              dispatch(questionCreateSuccess(questionResp));
             }
           })
           .catch(() => dispatch(questionCreateHasErrored(true)));
@@ -225,14 +225,15 @@ export function optionUpdateCalled(optionObj) {
               return response;
           })
           .then((response) => response.json())
-          .then((option) => {
-            if('error' in option){
+          .then((optionResponse) => {
+            if('error' in optionResponse){
               dispatch(questionUpdateValidationErrored(option.error))
             }else{
+              const completeOptionObj = { ...optionResponse, questionObj}
               if( questionObj && questionObj._has_parent_question){
-                dispatch(childOptionUpdateSuccess(option));
+                dispatch(childOptionUpdateSuccess(completeOptionObj));
               }else{
-                dispatch(optionUpdateSuccess(optionObj));
+                dispatch(optionUpdateSuccess(completeOptionObj));
               }
             }
             

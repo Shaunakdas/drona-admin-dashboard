@@ -32,15 +32,30 @@ class Question extends Component {
   constructor(props){
     super(props)
     this.state = {
-      finalObj: {},
+      finalObj: this.getDefaultFinalOptions(props),
     }
     this.editor = this.editor.bind(this);
     this.optionListEditor = this.optionListEditor.bind(this);
   }
+
+  getDefaultFinalOptions = (props) => {
+    return this.copyDefaultKeys(props.questionObj)
+  }
+  copyDefaultKeys = (question) => {
+    let finalOp = {};
+    for (let key in question){
+      if(question[key] === "bool"){
+        finalOp[key] = false;
+      } else if(question[key] === "dropdown"){
+        finalOp[key] = question[`_${key}`].split(',')[1]
+      } else if(question[key] === "sequence"){
+        finalOp[key] = question[`_${key}`].split(',')[1]
+      }
+    }
+    return finalOp;
+  }
   //For current question attributes
   editor(field, value){
-    console.log('questionObj',this.props.questionObj)
-    console.log('finalObj',this.state.finalObj)
     const {questionIndex, updateQuestionList} = this.props;
     this.setState(prevState => ({
       finalObj: {                   // object that we want to update
@@ -134,15 +149,6 @@ class Question extends Component {
                 attributes={questionObj}
                 editor={this.editor}
               />
-              {/* Time */}
-              <InputText 
-                title="time"
-                input={questionObj.time}
-                rows="1"
-                field="time"
-                attributes={questionObj}
-                editor={this.editor}
-              />
               {/* Tip */}
               <InputText 
                 title="Tip"
@@ -161,15 +167,6 @@ class Question extends Component {
                 attributes={questionObj}
                 editor={this.editor}
               />
-              {/* Correct Option Count */}
-              <InputText 
-                title="Correct Option Count"
-                input={questionObj.correct_option_count}
-                rows="1"
-                field="correct_option_count"
-                attributes={questionObj}
-                editor={this.editor}
-              />
 
               {/* Tips */}
               {
@@ -182,6 +179,7 @@ class Question extends Component {
                           title="Tips"
                           input={questionObj.tips}
                           rows="2"
+                          field="tips"
                           attributes={questionObj}
                           editor={this.editor}
                       />
@@ -194,6 +192,7 @@ class Question extends Component {
                                   title="Tip"
                                   rows="2"
                                   input={tip}
+                                  field="tips"
                                   attributes={questionObj}
                                   editor={this.editor}
                                 />

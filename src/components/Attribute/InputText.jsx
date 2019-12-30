@@ -69,6 +69,8 @@ class InputText extends Component {
         return props.openForCreating? this.optionList()[0] : (props.input||'')
       case("input"):
         return props.openForCreating? '': (props.input||'')
+      case("positive_integer"):
+        return props.openForCreating? '': (props.input||'')
       case("german"):
         return "German Shepherds are good boys and girls."
       default:
@@ -96,6 +98,8 @@ class InputText extends Component {
       case("sequence"):
         return openForEditing? this.editDropdownComponent() : this.createDropdownComponent()
       case("input"):
+        return openForEditing? this.editInputComponent() : this.createInputComponent()
+      case("positive_integer"):
         return openForEditing? this.editInputComponent() : this.createInputComponent()
       case("german"):
         return "German Shepherds are good boys and girls."
@@ -182,7 +186,7 @@ class InputText extends Component {
         componentClass="select"  
         name={this.state.name}
         type={this.state.type}
-        value={this.optionList()[0]}
+        value={this.state.value}
         onChange={event=>{
           this.setState({value:event.target.value});
           this.props.editor(this.props.field, event.target.value);
