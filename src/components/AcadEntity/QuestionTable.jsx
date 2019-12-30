@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import ReactTable from "react-table";
 import {
-    DropdownButton,
-    Table,
-    MenuItem
+    ControlLabel
   } from "react-bootstrap";
 
 import Button from "components/CustomButton/CustomButton.jsx";
@@ -63,6 +61,7 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
         }
         return (
             <div>
+                <ControlLabel>Question List</ControlLabel>
                 <ReactTable
                     defaultFilterMethod={this.filterMethod}
                     filterable

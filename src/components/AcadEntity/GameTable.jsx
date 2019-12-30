@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     Table,
-    Button
+    Button,
+    ControlLabel
   } from "react-bootstrap";
   import { gamesFetchData, gameSelected, gameFetchQuestionStructure } from '../../store/games/actions';
   import { questionsFetchData } from '../../store/questions/actions';
@@ -34,34 +35,38 @@ import {
             return null;
         }
         return (
-            <Table striped hover>
-                <thead>
-                <tr>
-                    <th key={'Seq.'}>{'Seq.'}</th>
-                    <th key={'Title'}>{'Title'}</th>
-                    <th key={'Type'}>{'Type'}</th>
-                    <th key={'Id'}>{'Id'}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {("games" in this.props.games)?
-                  this.props.games.games.map((game, i) => (
-                    <tr key={game.id} style={this.bgColor(game.id)}>
-                        <td key={game.sequence}>{game.sequence}</td>
-                        <td key={game.title}>{game.title}</td>
-                        <td key={game.game.name}>{game.game.name}</td>
-                        <td key={game.id}>{game.id}</td>
-                        <td key={"key"}>
-                            <Button style={btn} onClick={() => this.gameSelection(i)}>
-                                <i className="fa fa-hand-paper-o" />
-                            </Button>
-                        </td>
+            <div>
+                <ControlLabel>Game List:</ControlLabel>
+                <Table striped hover>
+                    <thead>
+                    <tr>
+                        <th key={'Seq.'}>{'Seq.'}</th>
+                        <th key={'Title'}>{'Title'}</th>
+                        <th key={'Type'}>{'Type'}</th>
+                        <th key={'Id'}>{'Id'}</th>
                     </tr>
-                    )) : null
-                }
-                
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                    {("games" in this.props.games)?
+                    this.props.games.games.map((game, i) => (
+                        <tr key={game.id} style={this.bgColor(game.id)}>
+                            <td key={game.sequence}>{game.sequence}</td>
+                            <td key={game.title}>{game.title}</td>
+                            <td key={game.game.name}>{game.game.name}</td>
+                            <td key={game.id}>{game.id}</td>
+                            <td key={"key"}>
+                                <Button style={btn} onClick={() => this.gameSelection(i)}>
+                                    <i className="fa fa-hand-paper-o" />
+                                </Button>
+                            </td>
+                        </tr>
+                        )) : null
+                    }
+                    
+                    </tbody>
+                </Table>
+            </div>
+            
         );
     }
 }
