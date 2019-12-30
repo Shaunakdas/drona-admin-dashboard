@@ -199,7 +199,7 @@ class InputText extends Component {
   
   editDropdownComponent() {
     const { field, attributes, questionUpdateCalled, optionUpdateCalled} = this.props;
-    const {id, entity_type} = attributes;
+    const {id, entity_type, questionObj} = attributes;
     
     
     return (
@@ -219,7 +219,10 @@ class InputText extends Component {
           if(entity_type === "game_question"){
             questionUpdateCalled(updateParams);
           }else{
-            optionUpdateCalled(updateParams);
+            this.props.optionUpdateCalled({
+              ...updateParams,
+              questionObj
+            });
           }
         }}
       >
@@ -235,7 +238,7 @@ class InputText extends Component {
   render() {
     const btn ={backgroundColor: '#10bcf1'};
     const finalValue = (value) => {
-      return this.inputType(this.props) === "input" ? convertToKatex(value) : value;
+      return this.inputType(this.props) === "input" ? convertToKatex(String(value)) : String(value);
     }
     return (
       (this.props.input === undefined)?

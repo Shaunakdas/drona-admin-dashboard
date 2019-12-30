@@ -229,7 +229,7 @@ export function optionUpdateCalled(optionObj) {
             if('error' in option){
               dispatch(questionUpdateValidationErrored(option.error))
             }else{
-              if( questionObj._has_parent_question){
+              if( questionObj && questionObj._has_parent_question){
                 dispatch(childOptionUpdateSuccess(option));
               }else{
                 dispatch(optionUpdateSuccess(optionObj));

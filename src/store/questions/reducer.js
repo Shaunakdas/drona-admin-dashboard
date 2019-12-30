@@ -8,7 +8,7 @@ const initialState = {
 export function questions(state = initialState, action) {
   switch (action.type) {
     case 'QUESTIONS_IS_LOADING': 
-        return { ...state, isLoading: true };
+        return { ...state, isLoading: true, errorMessage: '' };
     case 'QUESTIONS_FETCH_DATA_SUCCESS':
         return { ...state, isLoading: false, questions: action.questions.game_holder_detail.question_input.sections };
     case 'QUESTIONS_HAS_ERRORED': 
@@ -20,7 +20,7 @@ export function questions(state = initialState, action) {
     case 'QUESTION_CREATING':
         return { ...state, openForEditing: false, openForCreating: true, selectedId: action.questionId };
     case 'QUESTION_UPDATE_PENDING': 
-        return { ...state, isQuestionUpdatePending: true };
+        return { ...state, isQuestionUpdatePending: true, errorMessage: '' };
     case 'QUESTION_CREATE_SUCCESS':
         return { 
             ...state,
@@ -59,7 +59,7 @@ export function questions(state = initialState, action) {
     case 'QUESTION_UPDATE_HAS_ERRORED': 
         return { ...state, isQuestionUpdatePending: false, errorMessage: 'Error in Response' };
     case 'OPTION_UPDATE_PENDING': 
-        return { ...state, isOptionUpdatePending: true };
+        return { ...state, isOptionUpdatePending: true, errorMessage: '' };
     case 'OPTION_UPDATE_SUCCESS':
         return { 
             ...state,
