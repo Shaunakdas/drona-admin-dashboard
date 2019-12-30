@@ -122,13 +122,13 @@ class QuestionList extends Component {
             })
           }
           <Button
-            bsStyle="info"
+            bsStyle="primary" fill
             onClick={() => this.addButton()} >
             Add Question
           </Button>
           {
             openForCreating?
-            <Button bsStyle="info" pullRight fill onClick={this.createQuestion.bind(this)}>
+            <Button bsStyle="primary" pullRight fill onClick={this.createQuestion.bind(this)}>
               Upload Question
             </Button>
             : null

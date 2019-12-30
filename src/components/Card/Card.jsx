@@ -28,6 +28,9 @@ class Card extends Component {
           (this.props.plain ? " card-plain" : "") +
           (this.props.wizard ? " card-wizard" : "")
         }
+        style={{
+          backgroundColor: this.props.backgroundColor,
+          color: this.props.color}}
       >
         {this.props.title !== undefined || this.props.category !== undefined ? (
           <div
@@ -67,6 +70,10 @@ class Card extends Component {
         ) : null}
       </div>
     );
+  }
+  static defaultProps = {
+    backgroundColor: 'white',
+    color: 'black'
   }
 }
 

@@ -37,11 +37,11 @@ class OptionList extends Component {
   copyDefaultKeys = (option) => {
     let finalOp = {};
     for (let key in option){
-      if(option[key] == "bool"){
+      if(option[key] === "bool"){
         finalOp[key] = false;
-      } else if(option[key] == "dropdown"){
+      } else if(option[key] === "dropdown"){
         finalOp[key] = option[`_${key}`].split('')[1]
-      } else if(option[key] == "sequence"){
+      } else if(option[key] === "sequence"){
         finalOp[key] = option[`_${key}`].split('')[1]
       }
     }
@@ -111,7 +111,7 @@ class OptionList extends Component {
           })
         }
         <Button
-          bsStyle="info"
+          bsStyle="primary" pullLeft fill
           onClick={() => this.addButton()} >
           Add Option
         </Button>

@@ -30,12 +30,17 @@ class Option extends Component {
   editor(field, value){
     this.props.updateOptionList(this.props.optionIndex, field,value)
   }
+  getBackgroundColor = () => {
+    const { optionIndex} = this.props;
+    return ['palegreen', 'limegreen', 'greenyellow', 'lawngreen', 'lightgreen'][optionIndex%5]
+  }
   render() {
-    const { option, questionObj, questions} = this.props;
+    const { option, questionObj, questions, optionIndex} = this.props;
     let optionObj = { ...option, questionObj};
     return (
       <Card
-        title="Option"
+        title={`Option #${optionIndex+1}`}
+        backgroundColor={this.getBackgroundColor()}
         content={
           <div>
             {

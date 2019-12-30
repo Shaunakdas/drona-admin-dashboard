@@ -242,18 +242,26 @@ class InputText extends Component {
         null : 
         <Row>
           <Col md={6}>
-            <FormGroup controlId="formControlsTextarea">
               <ControlLabel>
                 {this.props.title}
               </ControlLabel>
               {
                 this.coreComponent()
               }
-            </FormGroup>
           </Col>
-          <Col md={6} style={btn}>
+          <Col md={6}>
             <ControlLabel>Final {this.props.title}</ControlLabel>
-            <BlockMath strict={'warn'} trust={false}>{finalValue(this.state.value)}</BlockMath>
+            <Card
+              backgroundColor={'linen'}
+              color={'blue'}
+              plain={true}
+              content={
+                <BlockMath strict={'warn'} trust={false}>{finalValue(this.state.value)}</BlockMath>
+              }
+              md={6}
+              block={true}
+               />
+            
             
           </Col>
           <hr />
