@@ -39,6 +39,8 @@ class Question extends Component {
   }
   //For current question attributes
   editor(field, value){
+    console.log('questionObj',this.props.questionObj)
+    console.log('finalObj',this.state.finalObj)
     const {questionIndex, updateQuestionList} = this.props;
     this.setState(prevState => ({
       finalObj: {                   // object that we want to update
@@ -81,6 +83,20 @@ class Question extends Component {
       this.state.finalObj,
       this.props.games.selected.id);
   }
+  getTitle = () => {
+    const {questionObj, questionIndex} = this.props;
+    if(questionObj._has_parent_question){
+      return `Question #${questionIndex+1}`
+    }
+    return "Question"
+  }
+  getBackgroundColor = () => {
+    const {questionObj, questionIndex} = this.props;
+    if(questionObj._has_parent_question){
+      return ['lightskyblue', 'skyblue', 'deepskyblue', 'dodgerblue'][questionIndex%4]
+    }
+    return "aqua"
+  }
   render() {
     const {questionObj, openForCreating, openForEditing} = this.props;
     if(questionObj === undefined){
@@ -89,7 +105,8 @@ class Question extends Component {
     const selectorCheck = (openForEditing && (typeof questionObj.answer === "boolean"))||(openForCreating && (questionObj.answer === "bool"))
     return (
         <Card
-          title="Question"
+          title={this.getTitle()}
+          backgroundColor={this.getBackgroundColor()}
           content={
             <form>
               {
@@ -165,6 +182,8 @@ class Question extends Component {
                           title="Tips"
                           input={questionObj.tips}
                           rows="2"
+                          attributes={questionObj}
+                          editor={this.editor}
                       />
                         : 
                         <div>
@@ -175,29 +194,13 @@ class Question extends Component {
                                   title="Tip"
                                   rows="2"
                                   input={tip}
+                                  attributes={questionObj}
+                                  editor={this.editor}
                                 />
                               )
                             })
                           }
                         </div>
-                    }
-                  </div>
-              }
-              {/* Numpad */}
-              {
-                (questionObj.numpad === undefined)?
-                  null : 
-                  <div>
-                    {
-                      questionObj.numpad.map((num) => {
-                        return (
-                          <InputText 
-                            title="Numpad"
-                            rows="1"
-                            input={num}
-                          />
-                        )
-                      })
                     }
                   </div>
               }
@@ -240,6 +243,7 @@ class Question extends Component {
                           rows="2"
                           field="answer"
                           editor={this.editor}
+                          attributes={questionObj}
                         />
                     }
                   </div>
@@ -335,7 +339,7 @@ class Question extends Component {
               <div className="clearfix" />
               {
                 !questionObj._has_parent_question?
-                <Button bsStyle="info" pullRight fill onClick={this.createQuestion.bind(this)}>
+                <Button bsStyle="primary" pullRight fill onClick={this.createQuestion.bind(this)}>
                   Upload Question
                 </Button>
                 : null

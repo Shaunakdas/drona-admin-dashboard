@@ -33,7 +33,20 @@ import SelectedEntityList from "components/AcadEntity/SelectedEntityList";
 
 import avatar from "assets/img/agility-tuts.png";
 import {  storeToken } from '../store/user/actions';
-
+const imageLinks = {
+  Agility: "https://i.ibb.co/x2yGjLV/Agility.png",
+  Conversion: "https://i.ibb.co/d4ynRZT/Conversion.png",
+  Diction: "https://i.ibb.co/N6GTzQn/Diction.png",
+  Discounting: "https://i.ibb.co/QCwd40R/Discounting.png",
+  Division: "https://i.ibb.co/cTJ5sxW/Division.png",
+  Estimation: "https://i.ibb.co/Y2VCMvg/Estimation.png",
+  Inversion: "https://i.ibb.co/nkBq9jm/Inversion.png",
+  Percentages: "https://i.ibb.co/BPwdVDw/Percentages.png",
+  Proportion: "https://i.ibb.co/tYXnQyn/Proportion.png",
+  Purchasing: "https://i.ibb.co/6rTsPdZ/Purchasing.png",
+  Refinement: "https://i.ibb.co/2t2w6hd/Refinement.png",
+  Tipping: "https://i.ibb.co/s3TR73G/Tipping.png"
+}
 class UpdateGame extends Component {
   questionSelected(){
     if (this.props.questions.openForEditing){
@@ -48,7 +61,12 @@ class UpdateGame extends Component {
     }
   }
   render() {  
-    const {cookies, questions} = this.props;
+    const {cookies, questions, games} = this.props;
+    let imageLink = "";
+    if('selected' in games){
+      const game = games.selected.game.name;
+      imageLink = imageLinks[game];
+    }
     return (cookies.get('AuthToken') === undefined)? (
       <Redirect to="/auth/login-page" />
           ) :  (
@@ -61,16 +79,18 @@ class UpdateGame extends Component {
                     <Col md={6}>
                       <SelectedEntityList />
                     </Col>
+                    </Row>
+                    <Row>
                     <Col md={6}>
                       <ImageZoom
                         image={{
-                          src: avatar,
+                          src: imageLink,
                           alt: 'Golden Gate Bridge',
                           className: 'img',
-                          style: { width: '30em' }
+                          style: { width: '70em' }
                         }}
                         zoomImage={{
-                          src: avatar,
+                          src: imageLink,
                           alt: 'Golden Gate Bridge'
                         }}
                       />

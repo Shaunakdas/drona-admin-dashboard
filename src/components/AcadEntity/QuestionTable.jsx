@@ -20,7 +20,7 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
               seq: i,
               id: question.id,
               display: question.question,
-              hint: question.hint,
+              hint: question.solution,
               actions: (
                 // we've added some custom button actions
                 <div className="actions-right">

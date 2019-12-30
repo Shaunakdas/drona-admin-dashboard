@@ -111,7 +111,7 @@ class OptionList extends Component {
           })
         }
         <Button
-          bsStyle="primary" pullLeft fill
+          bsStyle="info" pullLeft fill
           onClick={() => this.addButton()} >
           Add Option
         </Button>
