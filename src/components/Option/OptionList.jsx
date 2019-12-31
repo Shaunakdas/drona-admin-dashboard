@@ -16,24 +16,37 @@
 
 */
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import Option from "components/Option/Option";
 import Button from "components/CustomButton/CustomButton.jsx";
+import {  optionCreateCalled } from '../../store/questions/actions';
 
 class OptionList extends Component {
   constructor(props){
     super(props)
     this.state = {
-      optionStructure: props.options[0],
+      optionStructure: this.getOptionStructure(props),
       options: props.options,
       finalOptions: this.getDefaultFinalOptions(props)
     }
     this.updateOptionList = this.updateOptionList.bind(this);
   }
+
+  // Method to get game structure of option
+  getOptionStructure = (props) => {
+    const { games } = props;
+    if('questionStructure' in games){
+      const question = games.questionStructure;
+      return ('blocks' in question) ? question.blocks[0].options[0] : question.options[0];
+    } 
+  }
+  // Method to get Default structure for finalOptions Objet which will contain current option object in state
   getDefaultFinalOptions = (props) => {
     return props.options.map( option => {
       return this.copyDefaultKeys(option)
     })
   }
+  // Method to create option with default keys when user wants to add option while creating new question
   copyDefaultKeys = (option) => {
     let finalOp = {};
     for (let key in option){
@@ -47,18 +60,42 @@ class OptionList extends Component {
     }
     return finalOp;
   }
+  // Method to create empty option when user wants to add option while editing existing question
+  copyEmptyKeys = (option) => {
+    const optionStructure = this.getOptionStructure(this.props);
+    let finalOp = {};
+    for (let key in optionStructure){
+      if(option[key] === "string"){
+        finalOp[key] = " ";
+      } else if(option[key] === "bool"){
+        finalOp[key] = false;
+      } else if(option[key] === "dropdown"){
+        finalOp[key] = option[`_${key}`].split(',')[1]
+      } else if(option[key] === "sequence"){
+        finalOp[key] = option[`_${key}`].split(',')[1]
+      }
+    }
+    return finalOp;
+  }
 
   // Button for adding an option
   addButton(){
-    this.setState(state => {
-      const options = [...state.options, state.optionStructure];
-      const finalOptions = [...state.finalOptions, this.copyDefaultKeys(state.optionStructure)];
-      return {
-        ...state,
-        options,
-        finalOptions
-      };
-    });
+    const { openForCreating, openForEditing, optionCreateCalled, questionObj } = this.props;
+    const newFinalOption = openForCreating ? this.copyDefaultKeys(this.state.optionStructure) : this.copyEmptyKeys(this.state.optionStructure);
+    const newOption = openForCreating ? this.state.optionStructure : this.copyEmptyKeys(this.state.optionStructure);
+    if(openForEditing){
+      optionCreateCalled(questionObj, newFinalOption);
+    }else{
+      this.setState(state => {
+        const options = [...state.options, newOption];
+        const finalOptions = [...state.finalOptions, newFinalOption];
+        return {
+          ...state,
+          options,
+          finalOptions
+        };
+      });
+    }
   }
 
   // Function to update finalOption List in state, which wil be used to question option list
@@ -95,11 +132,12 @@ class OptionList extends Component {
   }
 
   render() {
-    const {questionObj} = this.props;
+    const {questionObj,openForEditing,  options} = this.props;
+    const optionList = openForEditing? options : this.state.options;
     return (
       <div>
         {
-          this.state.options.map((option, optionIndex) => {
+          optionList.map((option, optionIndex) => {
             return (
               <Option
                 key={optionIndex}
@@ -121,4 +159,17 @@ class OptionList extends Component {
   }
 }
 
-export default OptionList;
+const mapStateToProps = (state) => {
+  return {
+      questions: state.questions,
+      games: state.games,
+      openForCreating: state.questions.openForCreating,
+      openForEditing: state.questions.openForEditing
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    optionCreateCalled : (question, option) => dispatch(optionCreateCalled(question, option))
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps) (OptionList);

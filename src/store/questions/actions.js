@@ -241,3 +241,71 @@ export function optionUpdateCalled(optionObj) {
           .catch(() => dispatch(optionUpdateHasErrored(true)));
   };
 }
+export function optionCreatePending(bool) {
+  return {
+      type: 'OPTION_CREATE_PENDING',
+      isPending: bool
+  };
+}
+export function optionCreateHasErrored(bool) {
+  return {
+      type: 'OPTION_CREATE_HAS_ERRORED',
+      hasErrored: bool
+  };
+}
+export function optionCreateSuccess(question, option) {
+  return {
+      type: 'OPTION_CREATE_SUCCESS',
+      question,
+      option
+  };
+}
+export function childOptionCreateSuccess(question, option) {
+  return {
+      type: 'CHILD_OPTION_CREATE_SUCCESS',
+      question,
+      option
+  };
+}
+export function optionCreateValidationErrored(error) {
+  return {
+      type: 'OPTION_CREATE_VALIDATION_ERRORED',
+      error
+  };
+}
+export function optionCreateCalled(question, option) {
+  return (dispatch) => {
+      dispatch(optionCreatePending(true));
+      fetch(`${process.env.REACT_APP_DRONA_BACKEND}/api/v1/question/${question.id}/option`, {
+        method: 'post',
+        body: JSON.stringify(option),
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization':process.env.REACT_APP_AUTH_TOKEN
+        }
+       })
+          .then((response) => {
+              if (!response.ok) {
+                  throw Error(response.statusText);
+              }
+
+              dispatch(optionCreatePending(false));
+
+              return response;
+          })
+          .then((response) => response.json())
+          .then((optionResponse) => {
+            if('error' in optionResponse){
+              dispatch(optionCreateValidationErrored(option.error))
+            }else{
+              if( question && question._has_parent_question){
+                dispatch(childOptionCreateSuccess(question, optionResponse));
+              }else{
+                dispatch(optionCreateSuccess(question, optionResponse));
+              }
+            }
+            
+          })
+          .catch(() => dispatch(optionUpdateHasErrored(true)));
+  };
+}

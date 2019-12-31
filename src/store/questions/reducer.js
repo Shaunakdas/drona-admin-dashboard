@@ -8,7 +8,7 @@ const initialState = {
 export function questions(state = initialState, action) {
   switch (action.type) {
     case 'QUESTIONS_IS_LOADING': 
-        return { ...state, isLoading: true, errorMessage: '' };
+        return { ...state, isLoading: action.isLoading, errorMessage: '' };
     case 'QUESTIONS_FETCH_DATA_SUCCESS':
         return { ...state, isLoading: false, questions: action.questions.game_holder_detail.question_input.sections };
     case 'QUESTIONS_HAS_ERRORED': 
@@ -103,6 +103,45 @@ export function questions(state = initialState, action) {
     case 'OPTION_UPDATE_HAS_ERRORED': 
         return { ...state, isOptionUpdatePending: false, errorMessage: 'Error in Response' };
     case 'QUESTION_UPDATE_VALIDATION_ERRORED': 
+        return { ...state, errorMessage: action.error };
+    case 'OPTION_CREATE_PENDING': 
+        return { ...state, isOptionCreatePending: action.isPending, errorMessage: '' };
+    case 'OPTION_CREATE_HAS_ERRORED': 
+        return { ...state, isOptionCreatePending: action.hasErrored, errorMessage: 'Error in Response' };
+    case 'OPTION_CREATE_SUCCESS': 
+        return { 
+            ...state,
+            isOptionCreatePending: false, 
+            questions: state.questions.map(
+                question => question.id === state.selectedId ? 
+                    {
+                        ...question,
+                        options: question.options.concat(action.option)
+                    } : question
+            )
+            };
+    case 'CHILD_OPTION_CREATE_SUCCESS': 
+        // Now creating the whole state with blocks variable
+        const selectedParentQues = state.questions.find(x => x.id === state.selectedId);
+        return { 
+            ...state,
+            isOptionCreatePending: false, 
+            questions: state.questions.map(
+                question => question.id === state.selectedId ? (
+                    {
+                        ...selectedParentQues,
+                        blocks: selectedParentQues.blocks.map(
+                            block => block.id === action.question.id ? 
+                            {
+                                ...block,
+                                options: block.options.concat(action.option)
+                            } : block
+                        )
+                    }
+                ) : question
+            )
+        };
+    case 'OPTION_CREATE_VALIDATION_ERRORED': 
         return { ...state, errorMessage: action.error };    
     default:
         return state;
