@@ -31,7 +31,6 @@ import QuestionEditor from "./Games/QuestionEditor.jsx";
 import SelectedEntityList from "components/AcadEntity/SelectedEntityList";
 
 
-import avatar from "assets/img/agility-tuts.png";
 import {  storeToken } from '../store/user/actions';
 const imageLinks = {
   Agility: "https://i.ibb.co/x2yGjLV/Agility.png",
