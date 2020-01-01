@@ -123,19 +123,19 @@ class UpdateGame extends Component {
               cancelBtnText="Cancel"
               showCancel
           >
-              You will not be able to recover this imaginary file!
+              Trying to delete Question [id: {question.id} display: {question.display}]
           </SweetAlert>
           )
       });
   }
-  deleteOption(question, parentQuestionId) {
+  deleteOption(option, question) {
       this.setState({
           alert: (
           <SweetAlert
               warning
               style={{ display: "block", marginTop: "-100px" }}
               title="Are you sure?"
-              onConfirm={() => this.successOptionDelete(question, parentQuestionId)}
+              onConfirm={() => this.successOptionDelete(option, question)}
               onCancel={() => this.cancelDelete()}
               confirmBtnBsStyle="info"
               cancelBtnBsStyle="danger"
@@ -143,7 +143,7 @@ class UpdateGame extends Component {
               cancelBtnText="Cancel"
               showCancel
           >
-              You will not be able to recover this imaginary file!
+              Trying to delete Option [id: {option.id} display: {option.display}]
           </SweetAlert>
           )
       });
