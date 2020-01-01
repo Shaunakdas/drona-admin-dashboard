@@ -25,8 +25,12 @@ import {
   FormControl,
   InputGroup
 } from "react-bootstrap";
-
+import { withCookies } from 'react-cookie';
 class HeaderLinks extends Component {
+  logout = (event) => {
+    console.log('cookies')
+    this.props.cookies.remove('AuthToken', { path: '/', domain: 'docgenius.in' });
+  }
   render() {
     return (
       <div>
@@ -41,7 +45,7 @@ class HeaderLinks extends Component {
           </FormGroup>
         </Navbar.Form>
         <Nav pullRight>
-          <NavItem eventKey={3} href="#">
+          {/* <NavItem eventKey={3} href="#">
             <i className="fa fa-line-chart" />
             <p>Stats</p>
           </NavItem>
@@ -86,7 +90,7 @@ class HeaderLinks extends Component {
             <MenuItem eventKey={3.3}>Notification 3</MenuItem>
             <MenuItem eventKey={3.4}>Notification 4</MenuItem>
             <MenuItem eventKey={3.5}>Another notifications</MenuItem>
-          </NavDropdown>
+          </NavDropdown> */}
           <NavDropdown
             eventKey={4}
             title={
@@ -115,7 +119,7 @@ class HeaderLinks extends Component {
             <MenuItem eventKey={4.4}>
               <i className="pe-7s-lock" /> Lock Screen
             </MenuItem>
-            <MenuItem eventKey={4.5}>
+            <MenuItem eventKey={4.5} onClick={(event) => this.logout(event)}>
               <div className="text-danger">
                 <i className="pe-7s-close-circle" /> Log out
               </div>
@@ -126,4 +130,4 @@ class HeaderLinks extends Component {
     );
   }
 }
-export default HeaderLinks;
+export default withCookies(HeaderLinks);
