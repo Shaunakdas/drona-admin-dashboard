@@ -132,7 +132,7 @@ class OptionList extends Component {
   }
 
   render() {
-    const {questionObj,openForEditing,  options} = this.props;
+    const {questionObj,openForEditing,  options, deleteOption} = this.props;
     const optionList = openForEditing? options : this.state.options;
     return (
       <div>
@@ -142,7 +142,9 @@ class OptionList extends Component {
               <Option
                 key={optionIndex}
                 option={option}
+                deleteOption={deleteOption}
                 optionIndex={optionIndex}
+                openForEditing={openForEditing}
                 updateOptionList={this.updateOptionList}
                 questionObj={questionObj} />
             )

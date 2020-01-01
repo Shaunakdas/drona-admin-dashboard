@@ -136,6 +136,40 @@ export function questions(state = initialState, action) {
         return { ...state, isOptionUpdatePending: false, errorMessage: 'Error in Response' };
     case 'QUESTION_UPDATE_VALIDATION_ERRORED': 
         return { ...state, errorMessage: action.error };
+    case 'OPTION_DELETE_SUCCESS':
+        return { 
+            ...state,
+            isOptionUpdatePending: false, 
+            questions: state.questions.map(
+                question => question.id === state.selectedId ? 
+                    {
+                        ...question,
+                        options: question.options.filter( option => option.id != action.option.id )
+                    } : question
+            )
+            };
+    
+    case 'CHILD_OPTION_DELETE_SUCCESS':
+        const currentParentQuestion = state.questions.find(x => x.id === state.selectedId)
+        const currentBlocks = selectedParentQuestion.blocks.map(
+            block => block.id === action.question.id ? 
+            {
+                ...block,
+                options: block.options.filter( option => option.id != action.option.id )
+            } : block
+        )
+        // Now creating the whole state with blocks variable
+        const newParentQuestion = {
+            ...currentParentQuestion,
+            blocks: currentBlocks
+        }
+        return { 
+            ...state,
+            isOptionUpdatePending: false, 
+            questions: state.questions.map(
+                question => question.id === state.selectedId ? newParentQuestion : question
+            )
+        };
     case 'OPTION_CREATE_PENDING': 
         return { ...state, isOptionCreatePending: action.isPending, errorMessage: '' };
     case 'OPTION_CREATE_HAS_ERRORED': 

@@ -21,6 +21,7 @@ import { connect } from 'react-redux';
 import Card from "components/Card/Card.jsx";
 import InputText from "../Attribute/InputText"
 import Selector from "../Attribute/Selector"
+import Button from "components/CustomButton/CustomButton.jsx";
 
 class Option extends Component {
   constructor(props){
@@ -34,8 +35,13 @@ class Option extends Component {
     const { optionIndex} = this.props;
     return ['palegreen', 'limegreen', 'greenyellow', 'lawngreen', 'lightgreen'][optionIndex%5]
   }
+
+  deleteOption () {
+    const {deleteOption, questionObj, option} = this.props;
+    deleteOption(option, (questionObj._has_parent_question ? questionObj : null));
+  }
   render() {
-    const { option, questionObj, questions, optionIndex} = this.props;
+    const { option, questionObj, questions, optionIndex, openForEditing} = this.props;
     let optionObj = { ...option, questionObj};
     return (
       <Card
@@ -50,6 +56,16 @@ class Option extends Component {
                 <p> Updating... </p>
               </div> : null
             }
+            {
+                openForEditing?
+                <Button bsStyle="danger" fill onClick={this.deleteOption.bind(this)}>
+                  <span className="btn-label">
+                    <i className="fa fa-times" />
+                  </span>
+                  Delete Option
+                </Button>
+                : null
+              }
             {/* Display */}
             {
               (optionObj.answer === undefined)?
@@ -231,7 +247,9 @@ class Option extends Component {
                   editor={this.editor}
                 />
             }
+            
             <div className="clearfix" />
+            
           </div>
         }
       />

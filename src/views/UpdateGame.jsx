@@ -33,7 +33,7 @@ import SelectedEntityList from "components/AcadEntity/SelectedEntityList";
 
 
 import {  storeToken } from '../store/user/actions';
-import { questionDeleteCalled } from '../store/questions/actions';
+import { questionDeleteCalled, optionDeleteCalled } from '../store/questions/actions';
 const imageLinks = {
   Agility: "https://i.ibb.co/x2yGjLV/Agility.png",
   Conversion: "https://i.ibb.co/d4ynRZT/Conversion.png",
@@ -56,9 +56,11 @@ class UpdateGame extends Component {
         show: false
     };
     this.hideAlert = this.hideAlert.bind(this);
-    this.successDelete = this.successDelete.bind(this);
+    this.successQuestionDelete = this.successQuestionDelete.bind(this);
+    this.successOptionDelete = this.successOptionDelete.bind(this);
     this.cancelDelete = this.cancelDelete.bind(this);
-    this.warningWithConfirmAndCancelMessage = this.warningWithConfirmAndCancelMessage.bind(this);
+    this.deleteQuestion = this.deleteQuestion.bind(this);
+    this.deleteOption = this.deleteOption.bind(this);
   }
   questionSelected(){
     if (this.props.questions.openForEditing){
@@ -72,7 +74,7 @@ class UpdateGame extends Component {
       this.props.storeToken(this.props.cookies.get('AuthToken'));
     }
   }
-  successDelete(question, parentQuestionId) {
+  successQuestionDelete(question, parentQuestionId) {
     this.props.questionDeleteCalled(question, 1, parentQuestionId);
     this.setState({
         alert: (
@@ -89,7 +91,24 @@ class UpdateGame extends Component {
         )
     });
   }
-  warningWithConfirmAndCancelMessage(question, parentQuestionId) {
+  successOptionDelete(option, question) {
+    this.props.optionDeleteCalled(option, 1, question);
+    this.setState({
+        alert: (
+        <SweetAlert
+            success
+            style={{ display: "block", marginTop: "-100px" }}
+            title="Deleted!"
+            onConfirm={() => this.hideAlert()}
+            onCancel={() => this.hideAlert()}
+            confirmBtnBsStyle="info"
+        >
+            Your imaginary file has been deleted.
+        </SweetAlert>
+        )
+    });
+  }
+  deleteQuestion(question, parentQuestionId) {
       this.setState({
           alert: (
           <SweetAlert
@@ -97,6 +116,26 @@ class UpdateGame extends Component {
               style={{ display: "block", marginTop: "-100px" }}
               title="Are you sure?"
               onConfirm={() => this.successDelete(question, parentQuestionId)}
+              onCancel={() => this.cancelDelete()}
+              confirmBtnBsStyle="info"
+              cancelBtnBsStyle="danger"
+              confirmBtnText="Yes, delete it!"
+              cancelBtnText="Cancel"
+              showCancel
+          >
+              You will not be able to recover this imaginary file!
+          </SweetAlert>
+          )
+      });
+  }
+  deleteOption(question, parentQuestionId) {
+      this.setState({
+          alert: (
+          <SweetAlert
+              warning
+              style={{ display: "block", marginTop: "-100px" }}
+              title="Are you sure?"
+              onConfirm={() => this.successOptionDelete(question, parentQuestionId)}
               onCancel={() => this.cancelDelete()}
               confirmBtnBsStyle="info"
               cancelBtnBsStyle="danger"
@@ -170,7 +209,8 @@ class UpdateGame extends Component {
                     {/* {gameComponent} */}
                     {this.state.alert}
                     <QuestionEditor question={this.questionSelected()}
-                      deleteQuestion={this.warningWithConfirmAndCancelMessage}/>
+                      deleteQuestion={this.deleteQuestion}
+                      deleteOption={this.deleteOption}/>
                   </Row>
                 </Grid>
               </div>
@@ -189,6 +229,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
       storeToken: (authToken) => dispatch(storeToken(authToken)), 
       questionDeleteCalled: (question, deleteStatus, parentQuestionId) => dispatch(questionDeleteCalled(question, deleteStatus, parentQuestionId)), 
+      optionDeleteCalled: (option, deleteStatus, question) => dispatch(optionDeleteCalled(option, deleteStatus, question)), 
   };
 };
 export default withCookies(connect(mapStateToProps, mapDispatchToProps)(UpdateGame));

@@ -118,7 +118,7 @@ class Question extends Component {
     return "aqua"
   }
   render() {
-    const {questionObj, openForCreating, openForEditing} = this.props;
+    const {questionObj, openForCreating, openForEditing, deleteOption} = this.props;
     if(questionObj === undefined){
       return <Redirect to="/admin/dashboard" />
     }
@@ -135,6 +135,16 @@ class Question extends Component {
                   <i className="pe-7s-lock" />
                   <p> Updating... </p>
                 </div> : null
+              }
+              {
+                openForEditing?
+                <Button bsStyle="danger" pullLeft fill onClick={this.deleteQuestion.bind(this)}>
+                  <span className="btn-label">
+                    <i className="fa fa-times" />
+                  </span>
+                  Delete Question
+                </Button>
+                : null
               }
               {/* Display */}
               <InputText 
@@ -336,6 +346,7 @@ class Question extends Component {
                 (questionObj.options === undefined)?
                   null : 
                   <OptionList
+                    deleteOption={deleteOption}
                     options={questionObj.options}
                     editor={this.optionListEditor}
                     questionObj={questionObj}/>
@@ -345,13 +356,6 @@ class Question extends Component {
                 (!questionObj._has_parent_question && openForCreating)?
                 <Button bsStyle="primary" pullRight fill onClick={this.createQuestion.bind(this)}>
                   Upload Question
-                </Button>
-                : null
-              }
-              {
-                openForEditing?
-                <Button bsStyle="primary" pullLeft fill onClick={this.deleteQuestion.bind(this)}>
-                  Delete Question
                 </Button>
                 : null
               }

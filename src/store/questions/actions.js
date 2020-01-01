@@ -258,7 +258,7 @@ export function optionUpdateCalled(optionObj) {
           .then((response) => response.json())
           .then((optionResponse) => {
             if('error' in optionResponse){
-              dispatch(questionUpdateValidationErrored(option.error))
+              dispatch(questionUpdateValidationErrored(optionResponse.error))
             }else{
               const completeOptionObj = { ...optionResponse, questionObj}
               if( questionObj && questionObj._has_parent_question){
@@ -359,7 +359,6 @@ export function questionDeleteCalled(question,deleteStatus, parentQuestionId=-1)
       dispatch(questionUpdatePending(true));
       fetch(`${process.env.REACT_APP_DRONA_BACKEND}/api/v1/question_delete/${question.id}/${deleteStatus}`, {
         method: 'put',
-        body: JSON.stringify(question),
         headers: {
           'Content-Type':'application/json',
           'Authorization':process.env.REACT_APP_AUTH_TOKEN
@@ -388,5 +387,53 @@ export function questionDeleteCalled(question,deleteStatus, parentQuestionId=-1)
             
           })
           .catch(() => dispatch(questionUpdateHasErrored(true)));
+  };
+}
+export function optionDeleteSuccess(option) {
+  return {
+      type: 'OPTION_DELETE_SUCCESS',
+      option
+  };
+}
+export function childOptionDeleteSuccess(option, question) {
+  return {
+      type: 'CHILD_OPTION_DELETE_SUCCESS',
+      option,
+      question
+  };
+}
+export function optionDeleteCalled(option,status, question ) {
+  return (dispatch) => {
+      dispatch(optionUpdatePending(true));
+      fetch(`${process.env.REACT_APP_DRONA_BACKEND}/api/v1/option_delete/${option.id}/${status}`, {
+        method: 'put',
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization':process.env.REACT_APP_AUTH_TOKEN
+        }
+       })
+          .then((response) => {
+              if (!response.ok) {
+                  throw Error(response.statusText);
+              }
+
+              dispatch(optionUpdatePending(false));
+
+              return response;
+          })
+          .then((response) => response.json())
+          .then((optionResponse) => {
+            if('error' in optionResponse){
+              dispatch(questionUpdateValidationErrored(optionResponse.error))
+            }else{
+              if( question && question._has_parent_question){
+                dispatch(childOptionDeleteSuccess(option, question));
+              }else{
+                dispatch(optionDeleteSuccess(option));
+              }
+            }
+            
+          })
+          .catch(() => dispatch(optionUpdateHasErrored(true)));
   };
 }

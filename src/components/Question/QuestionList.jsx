@@ -158,7 +158,7 @@ class QuestionList extends Component {
     // this.props.editor( finalQuestions);
   }
   render() {
-    const {questionObj, openForCreating, openForEditing,questions, deleteQuestion} = this.props;
+    const {questionObj, openForCreating, openForEditing,questions, deleteQuestion, deleteOption} = this.props;
     const questionList =  openForCreating? this.state.questionObj : questionObj;
     return (
       <Card
@@ -171,6 +171,16 @@ class QuestionList extends Component {
               <i className="pe-7s-lock" />
               <p> Updating... </p>
             </div> : null
+          }
+          {
+            openForEditing?
+            <Button bsStyle="danger" pullLeft fill onClick={this.deleteQuestion.bind(this)}>
+              <span className="btn-label">
+                <i className="fa fa-times" />
+              </span>
+              Delete Question
+            </Button>
+            : null
           }
           {/* Display */}
           <InputText 
@@ -190,6 +200,7 @@ class QuestionList extends Component {
                   parentQuestionId = {questionObj.id}
                   questionIndex={key}
                   deleteQuestion={deleteQuestion}
+                  deleteOption={deleteOption}
                   updateQuestionList={this.updateQuestionList}/>);
             })
           }
@@ -202,13 +213,6 @@ class QuestionList extends Component {
             openForCreating?
             <Button bsStyle="primary" pullRight fill onClick={this.createQuestion.bind(this)}>
               Upload Question
-            </Button>
-            : null
-          }
-          {
-            openForEditing?
-            <Button bsStyle="primary" pullLeft fill onClick={this.deleteQuestion.bind(this)}>
-              Delete Question
             </Button>
             : null
           }
