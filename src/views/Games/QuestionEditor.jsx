@@ -70,12 +70,17 @@ class QuestionEditor extends Component {
    }
   render() {
     const question = this.questionSelected();
+    const {deleteQuestion} = this.props;
     return (
       <Col md={9}>
         {
           ((!(question === undefined)) && ("blocks" in question))?
-            <QuestionList questionObj={this.questionSelected()} /> :
-            <Question questionObj={this.questionSelected()} />
+            <QuestionList 
+              deleteQuestion={deleteQuestion}
+              questionObj={this.questionSelected()} /> :
+            <Question 
+              deleteQuestion={deleteQuestion}
+              questionObj={this.questionSelected()} />
         }
         {this.state.alert}
       </Col>

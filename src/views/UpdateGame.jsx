@@ -28,10 +28,12 @@ import {
 } from "react-bootstrap";
 
 import QuestionEditor from "./Games/QuestionEditor.jsx";
+import SweetAlert from "react-bootstrap-sweetalert";
 import SelectedEntityList from "components/AcadEntity/SelectedEntityList";
 
 
 import {  storeToken } from '../store/user/actions';
+import { questionDeleteCalled } from '../store/questions/actions';
 const imageLinks = {
   Agility: "https://i.ibb.co/x2yGjLV/Agility.png",
   Conversion: "https://i.ibb.co/d4ynRZT/Conversion.png",
@@ -47,6 +49,17 @@ const imageLinks = {
   Tipping: "https://i.ibb.co/s3TR73G/Tipping.png"
 }
 class UpdateGame extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        alert: null,
+        show: false
+    };
+    this.hideAlert = this.hideAlert.bind(this);
+    this.successDelete = this.successDelete.bind(this);
+    this.cancelDelete = this.cancelDelete.bind(this);
+    this.warningWithConfirmAndCancelMessage = this.warningWithConfirmAndCancelMessage.bind(this);
+  }
   questionSelected(){
     if (this.props.questions.openForEditing){
       return this.props.questions.questions.find(x => x.id === this.props.questions.selectedId);
@@ -58,6 +71,64 @@ class UpdateGame extends Component {
     if(this.props.cookies.get('AuthToken')){
       this.props.storeToken(this.props.cookies.get('AuthToken'));
     }
+  }
+  successDelete(question, parentQuestionId) {
+    this.props.questionDeleteCalled(question, 1, parentQuestionId);
+    this.setState({
+        alert: (
+        <SweetAlert
+            success
+            style={{ display: "block", marginTop: "-100px" }}
+            title="Deleted!"
+            onConfirm={() => this.hideAlert()}
+            onCancel={() => this.hideAlert()}
+            confirmBtnBsStyle="info"
+        >
+            Your imaginary file has been deleted.
+        </SweetAlert>
+        )
+    });
+  }
+  warningWithConfirmAndCancelMessage(question, parentQuestionId) {
+      this.setState({
+          alert: (
+          <SweetAlert
+              warning
+              style={{ display: "block", marginTop: "-100px" }}
+              title="Are you sure?"
+              onConfirm={() => this.successDelete(question, parentQuestionId)}
+              onCancel={() => this.cancelDelete()}
+              confirmBtnBsStyle="info"
+              cancelBtnBsStyle="danger"
+              confirmBtnText="Yes, delete it!"
+              cancelBtnText="Cancel"
+              showCancel
+          >
+              You will not be able to recover this imaginary file!
+          </SweetAlert>
+          )
+      });
+  }
+  cancelDelete() {
+      this.setState({
+          alert: (
+          <SweetAlert
+              danger
+              style={{ display: "block", marginTop: "-100px" }}
+              title="Cancelled"
+              onConfirm={() => this.hideAlert()}
+              onCancel={() => this.hideAlert()}
+              confirmBtnBsStyle="info"
+          >
+              Your imaginary file is safe :)
+          </SweetAlert>
+          )
+      });
+  }
+  hideAlert() {
+      this.setState({
+        alert: null
+      });
   }
   render() {  
     const {cookies, questions, games} = this.props;
@@ -97,7 +168,9 @@ class UpdateGame extends Component {
                   </Row>
                   <Row>
                     {/* {gameComponent} */}
-                    <QuestionEditor question={this.questionSelected()}/>
+                    {this.state.alert}
+                    <QuestionEditor question={this.questionSelected()}
+                      deleteQuestion={this.warningWithConfirmAndCancelMessage}/>
                   </Row>
                 </Grid>
               </div>
@@ -114,7 +187,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-      storeToken: (authToken) => dispatch(storeToken(authToken)),
+      storeToken: (authToken) => dispatch(storeToken(authToken)), 
+      questionDeleteCalled: (question, deleteStatus, parentQuestionId) => dispatch(questionDeleteCalled(question, deleteStatus, parentQuestionId)), 
   };
 };
 export default withCookies(connect(mapStateToProps, mapDispatchToProps)(UpdateGame));

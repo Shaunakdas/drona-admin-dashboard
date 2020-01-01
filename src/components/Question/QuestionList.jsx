@@ -99,6 +99,10 @@ class QuestionList extends Component {
       this.state.finalQuestionObj,
       this.props.games.selected.id);
   }
+  deleteQuestion(){
+    const {deleteQuestion, questionObj} = this.props;
+    deleteQuestion(questionObj);
+  }
   // Button for adding an question
   addButton(){
     const { openForEditing, childQuestionCreateCalled, questionObj } = this.props;
@@ -154,7 +158,7 @@ class QuestionList extends Component {
     // this.props.editor( finalQuestions);
   }
   render() {
-    const {questionObj, openForCreating, openForEditing,questions} = this.props;
+    const {questionObj, openForCreating, openForEditing,questions, deleteQuestion} = this.props;
     const questionList =  openForCreating? this.state.questionObj : questionObj;
     return (
       <Card
@@ -183,7 +187,9 @@ class QuestionList extends Component {
                 <Question
                   key={key}
                   questionObj={block}
+                  parentQuestionId = {questionObj.id}
                   questionIndex={key}
+                  deleteQuestion={deleteQuestion}
                   updateQuestionList={this.updateQuestionList}/>);
             })
           }
@@ -196,6 +202,13 @@ class QuestionList extends Component {
             openForCreating?
             <Button bsStyle="primary" pullRight fill onClick={this.createQuestion.bind(this)}>
               Upload Question
+            </Button>
+            : null
+          }
+          {
+            openForEditing?
+            <Button bsStyle="primary" pullLeft fill onClick={this.deleteQuestion.bind(this)}>
+              Delete Question
             </Button>
             : null
           }

@@ -18,6 +18,7 @@
 import React, { Component } from "react";
 
 import { connect } from 'react-redux';
+import { Redirect } from "react-router-dom";
 
 import Card from "components/Card/Card.jsx";
 import InputText from "../Attribute/InputText"
@@ -98,6 +99,10 @@ class Question extends Component {
       this.state.finalObj,
       this.props.games.selected.id);
   }
+  deleteQuestion () {
+    const {deleteQuestion, questionObj, parentQuestionId} = this.props;
+    deleteQuestion(questionObj, parentQuestionId);
+  }
   getTitle = () => {
     const {questionObj, questionIndex} = this.props;
     if(questionObj._has_parent_question){
@@ -115,7 +120,7 @@ class Question extends Component {
   render() {
     const {questionObj, openForCreating, openForEditing} = this.props;
     if(questionObj === undefined){
-      return <div>{"question pending"}</div>
+      return <Redirect to="/admin/dashboard" />
     }
     const selectorCheck = (openForEditing && (typeof questionObj.answer === "boolean"))||(openForCreating && (questionObj.answer === "bool"))
     return (
@@ -340,6 +345,13 @@ class Question extends Component {
                 (!questionObj._has_parent_question && openForCreating)?
                 <Button bsStyle="primary" pullRight fill onClick={this.createQuestion.bind(this)}>
                   Upload Question
+                </Button>
+                : null
+              }
+              {
+                openForEditing?
+                <Button bsStyle="primary" pullLeft fill onClick={this.deleteQuestion.bind(this)}>
+                  Delete Question
                 </Button>
                 : null
               }
