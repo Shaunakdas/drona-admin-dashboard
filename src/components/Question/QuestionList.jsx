@@ -25,19 +25,27 @@ import Card from "components/Card/Card.jsx";
 import Question from "components/Question/Question";
 import Button from "components/CustomButton/CustomButton.jsx";
 import InputText from "../Attribute/InputText"
-import {  questionCreateCalled } from '../../store/questions/actions';
+import {  questionCreateCalled, childQuestionCreateCalled } from '../../store/questions/actions';
 
 class QuestionList extends Component {
   constructor(props){
     super(props)
     this.state = {
-      questionStructure: props.questionObj.blocks[0],
+      questionStructure: this.getQuestionStructure(props),
       questionObj: props.questionObj,
       finalQuestionObj: this.getDefaultFinalBlocks(props)
     }
     this.editor = this.editor.bind(this);
     this.updateQuestionList = this.updateQuestionList.bind(this);
   }
+  getQuestionStructure = (props) => {
+    const { games } = props;
+    if('questionStructure' in games){
+      const question = games.questionStructure;
+      return ('blocks' in question) ? question.blocks[0] : question;
+    } 
+  }
+  // Creation Mode
   getDefaultFinalBlocks = (props) => {
     const blocks = props.questionObj.blocks.map( block => {
       return this.copyDefaultKeys(block)
@@ -48,17 +56,43 @@ class QuestionList extends Component {
     }
   }
   copyDefaultKeys = (question) => {
-    let finalOp = {};
+    let finalQues = {};
     for (let key in question){
       if(question[key] === "bool"){
-        finalOp[key] = false;
+        finalQues[key] = false;
       } else if(question[key] === "dropdown"){
-        finalOp[key] = question[`_${key}`].split(',')[1]
+        finalQues[key] = question[`_${key}`].split(',')[1]
       } else if(question[key] === "sequence"){
-        finalOp[key] = question[`_${key}`].split(',')[1]
+        finalQues[key] = question[`_${key}`].split(',')[1]
       }
     }
-    return finalOp;
+    return finalQues;
+  }
+  // Edit Mode
+    // Method to create empty question when user wants to add question while editing existing parent question
+  copyQuestionStructure = () => {
+    const questionStructure = this.getQuestionStructure(this.props);
+    let finalQues = this.copyEntityKeys(questionStructure);
+    const option = this.copyEntityKeys(questionStructure.options[0]);
+    return {
+      ...finalQues,
+      options: [option]
+    }
+  }
+  copyEntityKeys = (structure) => {
+    let finalQues = {};
+    for (let key in structure){
+      if(structure[key] === "string"){
+        finalQues[key] = " ";
+      } else if(structure[key] === "bool"){
+        finalQues[key] = false;
+      } else if(structure[key] === "dropdown"){
+        finalQues[key] = structure[`_${key}`].split(',')[1]
+      } else if(structure[key] === "sequence"){
+        finalQues[key] = structure[`_${key}`].split(',')[1]
+      }
+    }
+    return finalQues;
   }
   createQuestion(){
     this.props.questionCreateCalled(
@@ -67,23 +101,28 @@ class QuestionList extends Component {
   }
   // Button for adding an question
   addButton(){
-    this.setState(state => {
-      const blocks = [...state.questionObj.blocks, state.questionStructure];
-      const questionObj ={
-        ...state.questionObj,
-        blocks
-      }
-      const finalBlocks = [...state.finalQuestionObj.blocks, this.copyDefaultKeys(state.questionStructure).blocks];
-      let finalQuestionObj = {
-        ...state.finalQuestionObj,
-        blocks: finalBlocks
-      }
-      return {
-        ...state,
-        questionObj,
-        finalQuestionObj,
-      };
-    });
+    const { openForEditing, childQuestionCreateCalled, questionObj } = this.props;
+    if(openForEditing){
+      childQuestionCreateCalled(questionObj, this.copyQuestionStructure());
+    }else{
+      this.setState(state => {
+        const blocks = [...state.questionObj.blocks, state.questionStructure];
+        const questionObj ={
+          ...state.questionObj,
+          blocks
+        }
+        const finalBlocks = [...state.finalQuestionObj.blocks, this.copyDefaultKeys(state.questionStructure).blocks];
+        let finalQuestionObj = {
+          ...state.finalQuestionObj,
+          blocks: finalBlocks
+        }
+        return {
+          ...state,
+          questionObj,
+          finalQuestionObj,
+        };
+      });
+    }
   }
   editor(field, value){
     this.setState(prevState => ({
@@ -116,6 +155,7 @@ class QuestionList extends Component {
   }
   render() {
     const {questionObj, openForCreating, openForEditing,questions} = this.props;
+    const questionList =  openForCreating? this.state.questionObj : questionObj;
     return (
       <Card
           title="Parent Question"
@@ -138,7 +178,7 @@ class QuestionList extends Component {
             editor={this.editor}
           />
           {
-            this.state.questionObj.blocks.map((block, key) => {
+            questionList.blocks.map((block, key) => {
               return (
                 <Question
                   key={key}
@@ -175,7 +215,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    questionCreateCalled : (question, gameId) => dispatch(questionCreateCalled(question, gameId))
+    questionCreateCalled : (question, gameId) => dispatch(questionCreateCalled(question, gameId)),
+    childQuestionCreateCalled: (parentQuestion, question) => dispatch(childQuestionCreateCalled(parentQuestion, question)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps) (QuestionList);

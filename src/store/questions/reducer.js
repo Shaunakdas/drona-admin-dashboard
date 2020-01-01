@@ -32,7 +32,20 @@ export function questions(state = initialState, action) {
             openForEditing: true,
             openForCreating: false
             };
-    
+    case 'CHILD_QUESTION_CREATE_SUCCESS':
+        return { 
+            ...state,
+            isQuestionUpdatePending: false,
+            questions: state.questions.map(
+                question => question.id === state.selectedId ? 
+                    {
+                        ...question,
+                        blocks: question.blocks.concat(action.question)
+                    } : question
+            ),
+            openForEditing: true,
+            openForCreating: false
+            };
     case 'QUESTION_UPDATE_SUCCESS':
         return { 
             ...state,
