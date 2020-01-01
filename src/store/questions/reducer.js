@@ -71,6 +71,25 @@ export function questions(state = initialState, action) {
                 question => question.id === state.selectedId ? actionQuestion : question
             )
             };
+    case 'QUESTION_DELETE_SUCCESS':
+        return { 
+            ...state,
+            isQuestionUpdatePending: false, 
+            questions: state.questions.filter( question => question.id != action.question.id )
+            };
+    case 'CHILD_QUESTION_DELETE_SUCCESS':
+        const newblocks = state.questions.find(x => x.id === action.parentQuestionId).blocks.filter(
+            question => question.id != action.question.id )
+        return { 
+            ...state,
+            isQuestionUpdatePending: false, 
+            questions: state.questions.map(
+                question => question.id === state.selectedId ? {
+                        ...selectedQuestion,
+                        newblocks
+                    } : question
+            )
+            };
     case 'QUESTION_UPDATE_HAS_ERRORED': 
         return { ...state, isQuestionUpdatePending: false, errorMessage: 'Error in Response' };
     case 'OPTION_UPDATE_PENDING': 

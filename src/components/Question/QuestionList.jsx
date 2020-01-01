@@ -25,7 +25,7 @@ import Card from "components/Card/Card.jsx";
 import Question from "components/Question/Question";
 import Button from "components/CustomButton/CustomButton.jsx";
 import InputText from "../Attribute/InputText"
-import {  questionCreateCalled, childQuestionCreateCalled } from '../../store/questions/actions';
+import {  questionCreateCalled, childQuestionCreateCalled, questionDeleteCalled } from '../../store/questions/actions';
 
 class QuestionList extends Component {
   constructor(props){

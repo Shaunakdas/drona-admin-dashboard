@@ -340,3 +340,53 @@ export function optionCreateCalled(question, option) {
           .catch(() => dispatch(optionUpdateHasErrored(true)));
   };
 }
+
+export function questionDeleteSuccess(question) {
+  return {
+      type: 'QUESTION_DELETE_SUCCESS',
+      question
+  };
+}
+export function childQuestionDeleteSuccess(question, parentQuestionId) {
+  return {
+      type: 'CHILD_QUESTION_DELETE_SUCCESS',
+      question,
+      parentQuestionId
+  };
+}
+export function questionDeleteCalled(question,deleteStatus, parentQuestionId=-1) {
+  return (dispatch) => {
+      dispatch(questionUpdatePending(true));
+      fetch(`${process.env.REACT_APP_DRONA_BACKEND}/api/v1/question_delete/${question.id}/${deleteStatus}`, {
+        method: 'put',
+        body: JSON.stringify(question),
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization':process.env.REACT_APP_AUTH_TOKEN
+        }
+       })
+          .then((response) => {
+              if (!response.ok) {
+                  throw Error(response.statusText);
+              }
+
+              dispatch(questionUpdatePending(false));
+
+              return response;
+          })
+          .then((response) => response.json())
+          .then((questionResp) => {
+            if('error' in questionResp){
+              questionUpdateValidationErrored(questionResp.error)
+            }else{
+              if(parentQuestionId === -1){
+                dispatch(questionDeleteSuccess(question))
+              }else{
+                dispatch(childQuestionDeleteSuccess(question, parentQuestionId))
+              }
+            }
+            
+          })
+          .catch(() => dispatch(questionUpdateHasErrored(true)));
+  };
+}
