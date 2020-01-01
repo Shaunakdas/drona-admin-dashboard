@@ -68,7 +68,7 @@ import { questionsFetchData,questionSelected,questionDeleteCalled } from '../../
                 onCancel={() => this.hideAlert()}
                 confirmBtnBsStyle="info"
             >
-                Your imaginary file has been deleted.
+                Trying to delete Question [id: {question.id} display: {question.display}]
             </SweetAlert>
             )
         });

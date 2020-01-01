@@ -115,7 +115,7 @@ class UpdateGame extends Component {
               warning
               style={{ display: "block", marginTop: "-100px" }}
               title="Are you sure?"
-              onConfirm={() => this.successDelete(question, parentQuestionId)}
+              onConfirm={() => this.successQuestionDelete(question, parentQuestionId)}
               onCancel={() => this.cancelDelete()}
               confirmBtnBsStyle="info"
               cancelBtnBsStyle="danger"
