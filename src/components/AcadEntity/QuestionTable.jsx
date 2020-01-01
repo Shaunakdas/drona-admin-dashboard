@@ -20,7 +20,7 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
               seq: i,
               id: question.id,
               display: question.question,
-              hint: question.solution,
+              date: new Date(question.question_updated_at*1000).toISOString(),
               actions: (
                 // we've added some custom button actions
                 <div className="actions-right">
@@ -47,7 +47,7 @@ import { questionsFetchData,questionSelected } from '../../store/questions/actio
             {Header: 'Id', accessor: 'id'},
             {Header: 'Title', accessor: 'display'},
             {Header: 'Actions', accessor: 'actions'},
-            {Header: 'Type', accessor: 'hint'},
+            {Header: 'Modified Date', accessor: 'date'},
         ]
         const {questions, games} = this.props;
         if (questions.hasErrored) {
