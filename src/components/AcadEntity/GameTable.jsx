@@ -5,16 +5,48 @@ import {
     Button,
     ControlLabel
   } from "react-bootstrap";
+  import SweetAlert from "react-bootstrap-sweetalert";
   import { gamesFetchData, gameSelected, gameFetchQuestionStructure } from '../../store/games/actions';
   import { questionsFetchData } from '../../store/questions/actions';
 
  class GameTable extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          alert: null,
+          show: false
+        };
+        this.hideAlert = this.hideAlert.bind(this);
+      }
     gameSelection(gameKey){
         let selectedGame = this.props.games.games[gameKey];
-        this.props.questionsFetchData(selectedGame.id);
-        this.props.gameFetchQuestionStructure(selectedGame.id);
-        this.props.gameSelected(selectedGame);
+        if (!selectedGame.enabled || (['proportion', 'estimation', 'inversion'].indexOf(selectedGame.game.slug) >= 0)) {
+            this.basicAlert();
+        } else{
+            this.props.questionsFetchData(selectedGame.id);
+            this.props.gameFetchQuestionStructure(selectedGame.id);
+            this.props.gameSelected(selectedGame);
+        }
     }
+    basicAlert() {
+        this.setState({
+          alert: (
+            <SweetAlert
+              style={{ display: "block", marginTop: "-100px" }}
+              title="Currently This game is not available to edit. Kindly choose other game"
+              onConfirm={() => this.hideAlert()}
+              onCancel={() => this.hideAlert()}
+              confirmBtnBsStyle="info"
+            />
+          )
+        });
+      }
+    
+  hideAlert() {
+    this.setState({
+      alert: null
+    });
+  }
     bgColor(gameId){
         const {games} = this.props;
         if(('selected' in games) && (gameId === games.selected.id)){
@@ -36,6 +68,7 @@ import {
         }
         return (
             <div>
+                {this.state.alert}
                 <ControlLabel>Game List:</ControlLabel>
                 <Table striped hover>
                     <thead>
